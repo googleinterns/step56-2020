@@ -20,7 +20,7 @@ import java.util.List;
 
 public final class Login {
 
-  // List of login info (email, login or logout link)
+  // List of login info (users's email, followed by login/logout link)
   private final List<String> loginInfo = new ArrayList<>();
 
   public void addToLoginList(String info) {

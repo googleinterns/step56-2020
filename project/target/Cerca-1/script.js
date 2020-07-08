@@ -12,21 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-//Fetches the login status from the servlet. If user is logged in, display logout link
-//if user is not logged in, display login link
+var user = "Guest";
+
+// Fetches the login status from the servlet. If user is logged in, display logout link
+// If user is not logged in, display login link
 function fetchLoginStatus () {
     fetch('/login').then(response => response.json()).then((login) => {
         const greeting = document.getElementById('login-greeting');
-        greeting.innerText = "Hello " + login.loginInfo[0];
-        
-        if (login.loginInfo[0].localeCompare("Guest") != 0){
-            const loginContainer = document.getElementById('login-container');
-            loginContainer.innerHTML = '<a href="' + login.loginInfo[1] + '">Logout here</a>';
+        const loginContainer = document.getElementById('login-container');
+        user = login.loginInfo[0];
+        var link = login.loginInfo[1];
+        greeting.innerText = "Hello " + user;
+        if (user.localeCompare("Guest") != 0){
+            loginContainer.innerHTML = '<a href="' + link + '">Logout here</a>';
         } else {
-            const loginContainer = document.getElementById('login-container');        
-            loginContainer.innerHTML = '<a href="' + login.loginInfo[1] + '">Login here</a>';
+            loginContainer.innerHTML = '<a href="' + link + '">Login here</a>';
         }
     });
 }
 
 fetchLoginStatus();
+
+// Display current user's search history
+function displaySearchHistory() {
+  fetch('/search').then(response => response.json()).then((searches) => {
+      console.log(searches);
+      console.log(user);
+      console.log(searches[user]);
+  });
+}
