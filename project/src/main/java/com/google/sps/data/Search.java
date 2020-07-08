@@ -40,8 +40,13 @@ public final class Search {
     System.out.println(searches);
   }
 
-  public Map<String, List<String>> getSearches () {
+  public Map<String, List<String>> getSearches() {
       return searches;
+  }
+
+  public List<String> getSearchHistory(String user) {
+    List<String> searchHistory = searches.get(user);
+    return searchHistory;
   }
 
 }

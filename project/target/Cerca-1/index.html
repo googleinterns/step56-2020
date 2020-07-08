@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
   </head>
-  <body>
+  <body onload="displaySearchHistory()">
     <div id="content">
 
         <div id="login-greeting"></div>
@@ -20,6 +20,9 @@
                 <input type="submit" />
             </form>
         </div>
+        
+        <p>Search History:</p>
+        <ul id="search-container"></ul>
         
     </div>
   </body>
