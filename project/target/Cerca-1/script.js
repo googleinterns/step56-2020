@@ -43,10 +43,8 @@ function displaySearchHistory() {
     
     const history = document.getElementById('history-content');
     for (const search in searches[user]) {
-        //history.appendChild(createHistoryElement(search));
         history.appendChild(createHistoryElement(searches[user][search]));
     }
-
   });
 }
 
@@ -55,4 +53,10 @@ function createHistoryElement(search) {
   const searchElement = document.createElement('a');
   searchElement.innerText = search;
   return searchElement;
+}
+
+function radiusChoice() {
+    const choice = document.getElementsByClassName('dropdown-content');
+    const name = choice.getAttribute('id');
+    console.log(name);
 }

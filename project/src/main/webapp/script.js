@@ -54,3 +54,9 @@ function createHistoryElement(search) {
   searchElement.innerText = search;
   return searchElement;
 }
+
+function radiusChoice() {
+    const choice = document.getElementsByClassName('dropdown-content');
+    const name = choice.getAttribute('id');
+    console.log(name);
+}
