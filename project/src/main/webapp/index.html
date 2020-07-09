@@ -17,8 +17,20 @@
     </div>
     <div class="container-fluid px-lg-5;">
         <div class="row mx-lg-n5">
-            <div class="col py-3 px-lg-5 border bg-light" >Filters go here</div>
+            <div class="col py-3 px-lg-5 border bg-light" >Filters go here <br><br><br><br><br><br><br><br>
+                <div id="search-form">
+                    <form action="/search" method="POST">
+                        <div class="search-form-group">
+                            <label id="search">Search Bar</label>
+                            <input type="text" class="form-control form-control-sm" name="search-input" aria-describedby="emailHelp">
+                        </div> <br>
+                        <button type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
             <div class="col py-3 px-lg-5 border bg-light">
+            <div id="login-greeting"></div>
+            <div id="login-container"></div> <br>
                 <form>
                     <div class="form-group">
                         <label for="InputEmail1">Email address</label>
@@ -52,24 +64,6 @@
 		<script async defer
 			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEVKOx6yO8pM10Jj39HXSkS4HYEv8nBJ8&callback=initMap">
 		</script>
-    <div id="content">
-
-        <div id="login-greeting"></div>
-        <div id="login-container"></div>
-
-        <div id="search-form">
-            <form action="/search" method="POST">
-                <p id="search">Enter a keyword to search: </p>
-                <textarea name="search-input"></textarea>
-                <br/><br/>
-                <input type="submit" />
-            </form>
-        </div>
-        
-        <p>Search History:</p>
-        <ul id="search-container"></ul>
-    </div>
-      
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
