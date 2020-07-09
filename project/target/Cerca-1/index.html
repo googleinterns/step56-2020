@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Cerca</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js"></script>
+  </head>
+  <body onload="displaySearchHistory()">
+    <div id="content">
+
+        <div id="login-greeting"></div>
+        <div id="login-container"></div>
+
+        <div id="search-form">
+            <form action="/search" method="POST">
+                <p id="search">Enter a keyword to search: </p>
+                <textarea name="search-input"></textarea>
+                <br/><br/>
+                <input type="submit" />
+            </form>
+        </div>
+        
+        <p>Search History:</p>
+        <ul id="search-container"></ul>
+        
+    </div>
+  </body>
+</html>
