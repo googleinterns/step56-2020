@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Cerca</title>
+    <link rel="stylesheet" href="style.css"></link>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script
@@ -22,7 +23,15 @@
                     <form action="/search" method="POST">
                         <div class="search-form-group">
                             <label id="search">Search Bar</label>
-                            <input type="text" class="form-control form-control-sm" name="search-input" aria-describedby="emailHelp">
+                            <input type="search" class="form-control form-control-sm" name="search-input" aria-describedby="emailHelp" autocomplete="off">
+                            <div class="dropdown">
+                                <button class="dropbtn">History</button>
+                                <div class="dropdown-content" id="history-content">
+                                    <a href="#">Link 1</a>
+                                    <a href="#">Link 2</a>
+                                    <a href="#">Link 3</a>
+                                </div>
+                            </div>
                         </div> <br>
                         <button type="submit">Search</button>
                     </form>
