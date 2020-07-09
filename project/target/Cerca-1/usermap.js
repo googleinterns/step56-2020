@@ -66,3 +66,4 @@ function placesCallback(results, pstatus) {
 }
 
 initMap();
+var userMap = nearbyPlaces.map((x) => x.id);
