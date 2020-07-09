@@ -33,11 +33,24 @@ function fetchLoginStatus () {
 
 fetchLoginStatus();
 
-// Display current user's search history
+// When "History" button is hovered over, display current user's search history
 function displaySearchHistory() {
   fetch('/search').then(response => response.json()).then((searches) => {
       console.log(searches);
       console.log(user);
       console.log(searches[user]);
+      console.log(searches[user][0]);
+    
+    const history = document.getElementById('history-content');
+    for (const search in searches[user]) {
+        history.appendChild(createHistoryElement(searches[user][search]));
+    }
   });
+}
+
+// Creates a search history element
+function createHistoryElement(search) {
+  const searchElement = document.createElement('a');
+  searchElement.innerText = search;
+  return searchElement;
 }

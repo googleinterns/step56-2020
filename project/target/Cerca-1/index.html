@@ -1,29 +1,80 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Cerca</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css"></link>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEVKOx6yO8pM10Jj39HXSkS4HYEv8nBJ8&callback=initMap&libraries=places&v=weekly"
+      defer
+    ></script>
     <script src="script.js"></script>
-  </head>
-  <body onload="displaySearchHistory()">
-    <div id="content">
-
-        <div id="login-greeting"></div>
-        <div id="login-container"></div>
-
-        <div id="search-form">
-            <form action="/search" method="POST">
-                <p id="search">Enter a keyword to search: </p>
-                <textarea name="search-input"></textarea>
-                <br/><br/>
-                <input type="submit" />
-            </form>
-        </div>
-        
-        <p>Search History:</p>
-        <ul id="search-container"></ul>
-        
+</head>
+<body onload="displaySearchHistory()" style="max-width: fit-content;">
+    <div class="container-fluid" style="text-align:center;">
+        <h1 style="color:rgb(36, 168, 240);">CERCA</h1>
     </div>
-  </body>
+    <div class="container-fluid px-lg-5;">
+        <div class="row mx-lg-n5">
+            <div class="col py-3 px-lg-5 border bg-light" >Filters go here <br><br><br><br><br><br><br><br>
+                <div id="search-form">
+                    <form action="/search" method="POST">
+                        <div class="search-form-group">
+                            <label id="search">Search Bar</label>
+                            <input type="search" class="form-control form-control-sm" name="search-input" aria-describedby="emailHelp" autocomplete="off">
+                            <div class="dropdown">
+                                <button class="dropbtn">History</button>
+                                <div class="dropdown-content" id="history-content">
+                                    <a href="#">Link 1</a>
+                                    <a href="#">Link 2</a>
+                                    <a href="#">Link 3</a>
+                                </div>
+                            </div>
+                        </div> <br>
+                        <button type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col py-3 px-lg-5 border bg-light">
+            <div id="login-greeting"></div>
+            <div id="login-container"></div> <br>
+                <form>
+                    <div class="form-group">
+                        <label for="InputEmail1">Email address</label>
+                        <input type="email" class="form-control form-control-sm" id="InputEmail1" aria-describedby="emailHelp">
+                    </div>
+                    <div class="form-group">
+                        <label for="InputPassword1">Password</label>
+                        <input type="password" class="form-control form-control-sm" id="InputPassword1" >
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <small id="emailHelp" class="form-text text-muted"><a href="/nourl">Sign Up</a></small>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid px-lg-5;" style="margin-top:45px">
+        <div class="row mx-lg-n5">
+            <div id="Catalog" class="col py-3 px-lg-5">Catalog</div>
+            <div id="Map" class="col py-3 px-lg-5" style="border: 5px solid MediumSeaGreen">
+                    <img src="https://cdn.vox-cdn.com/thumbor/hA9wAz4OK1QMgL8s8DvwZJsewlM=/0x0:1280x800/320x213/filters:focal(538x298:742x502)/cdn.vox-cdn.com/uploads/chorus_image/image/66260585/googlemaps.5.png" style="heigt:inherit;"
+            </div>
+        </div>
+    </div>
+    <div class="containter-fluid px-lg-5;" style="text-align:center; background-color: rgb(205, 233, 247); padding: 100px; margin-top:45px;">
+        <h1>Objective</h1>
+        <p>Our goal is to create a platform that will make it easy for consumers to support local businesses that have been impacted by the coronavirus pandemic. We plan on achieving this by creating filters that cater to various user preferences, highlighting the small businesses within a user’s region, displaying local stores’ catalogues, and facilitating communication between consumers and merchants. </p>
+    </div>
+      
+    <div class="map"></div>
+		<script src="usermap.js"></script>
+		<script async defer
+			src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEVKOx6yO8pM10Jj39HXSkS4HYEv8nBJ8&callback=initMap">
+		</script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+</body>
 </html>
