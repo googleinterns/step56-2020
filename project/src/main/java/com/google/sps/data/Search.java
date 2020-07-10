@@ -24,8 +24,6 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 
 /** Class containing user search history. */
 public final class Search {
-  // List of user's search history
-  private final List<String> searches = new ArrayList<>();
   private String userEmail = "";
 
   DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
@@ -41,6 +39,7 @@ public final class Search {
   }
 
   public List<String> getSearches() {
+    List<String> searches = new ArrayList<>();
     // Load user's searches from Datastore
     PreparedQuery results = datastore.prepare(query);
     for (Entity entity : results.asIterable()) {

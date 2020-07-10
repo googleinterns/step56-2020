@@ -17,9 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** Class containing login information. */
-
 public final class Login {
-
   // List of login info (users's email, followed by login/logout link)
   private final List<String> loginInfo = new ArrayList<>();
 
@@ -35,5 +33,4 @@ public final class Login {
   public String getEmail () {
       return loginInfo.get(0);
   }
-
 }
