@@ -55,8 +55,11 @@ function createHistoryElement(search) {
   return searchElement;
 }
 
-function radiusChoice() {
-    const choice = document.getElementsByClassName('dropdown-content');
-    const name = choice.getAttribute('id');
-    console.log(name);
+function filterChoices() {
+    const radius = document.getElementById("mySelectRadius").selectedIndex;
+    const type = document.getElementById("mySelectType").selectedIndex + 4;
+    const price = document.getElementById("mySelectPrice").selectedIndex + 9;
+    console.log(document.getElementsByTagName("option")[radius].value);
+    console.log(document.getElementsByTagName("option")[type].value);
+    console.log(document.getElementsByTagName("option")[price].value);
 }

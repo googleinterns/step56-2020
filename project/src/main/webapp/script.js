@@ -22,7 +22,7 @@ function fetchLoginStatus () {
         const loginContainer = document.getElementById('login-container');
         user = login.loginInfo[0];
         var link = login.loginInfo[1];
-        greeting.innerText = "Hello " + user;
+        greeting.innerText = "Hello, " + user + "!";
         if (user.localeCompare("Guest") != 0){
             loginContainer.innerHTML = '<a href="' + link + '">Logout here</a>';
         } else {
@@ -55,8 +55,13 @@ function createHistoryElement(search) {
   return searchElement;
 }
 
-function radiusChoice() {
-    const choice = document.getElementsByClassName('dropdown-content');
-    const name = choice.getAttribute('id');
-    console.log(name);
+// Called once user has selected their preferred filters and pressed the Search button
+// Stores filter choices
+function filterChoices() {
+    const radius = document.getElementById("mySelectRadius").selectedIndex;
+    const type = document.getElementById("mySelectType").selectedIndex + 4;
+    const price = document.getElementById("mySelectPrice").selectedIndex + 9;
+    console.log(document.getElementsByTagName("option")[radius].value);
+    console.log(document.getElementsByTagName("option")[type].value);
+    console.log(document.getElementsByTagName("option")[price].value);
 }

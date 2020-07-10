@@ -18,39 +18,30 @@
     </div>
     <div class="container-fluid px-lg-5;">
         <div class="row mx-lg-n5">
-            <div class="col py-3 px-lg-5 border bg-light" >Filters: 
-                    <div class="dropdown">
-                        <button class="dropbtn" style="width:160px">Radius 
-                            <i class="fa fa-caret-down"></i>
-                        </button>
-                        <div class="dropdown-content" onclick="radiusChoice()">
-                            <a id="tenMiles">10 miles</a>
-                            <a>20 miles</a>
-                            <a>30 miles</a>
-                            <a>50 miles</a>
-                        </div>
-                    </div>
-                    <div class="dropdown">
-                        <button class="dropbtn" style="width:160px">Type 
-                            <i class="fa fa-caret-down"></i>
-                        </button>
-                        <div class="dropdown-content" id="type">
-                            <a>American</a>
-                            <a>Mexican</a>
-                            <a>Indian</a>
-                            <a>Italian</a>
-                        </div>
-                    </div>
-                    <div class="dropdown">
-                        <button class="dropbtn" style="width:160px">Price 
-                            <i class="fa fa-caret-down"></i>
-                        </button>
-                        <div class="dropdown-content" id="price">
-                            <a>$</a>
-                            <a>$$</a>
-                            <a>$$$</a>
-                        </div>
-                    </div> <br><br><br>
+            <div class="col py-3 px-lg-5 border bg-light" >Filters: <br>
+                Radius: &nbsp;
+                <select id="mySelectRadius">
+                    <option value="10 Miles">10 Miles</option>
+                    <option value="20 Miles">20 Miles</option>
+                    <option value="30 Miles">30 Miles</option>
+                    <option value="50 Miles">50 Miles</option>
+                </select>
+                &nbsp;&nbsp; Type: &nbsp;
+                <select id="mySelectType">
+                    <option value="American">American</option>
+                    <option value="Mexican">Mexican</option>
+                    <option value="Indian">Indian</option>
+                    <option value="Chinese">Chinese</option>
+                    <option value="Italian">Italian</option>
+                </select>
+                &nbsp;&nbsp; Price: &nbsp;
+                <select id="mySelectPrice">
+                    <option value="$">$</option>
+                    <option value="$$">$$</option>
+                    <option value="$$$">$$$</option>
+                </select> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <button type="button" onclick="filterChoices()">Search</button>
+                <br><br><br><br><br>
                 <div id="search-form">
                     <form action="/search" method="POST">
                         <div class="search-form-group">
