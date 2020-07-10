@@ -23,39 +23,20 @@ import java.util.Date;
 import com.google.sps.data.Search;
 import com.google.sps.data.Login;
 import java.util.ArrayList;
-import java.util.HashMap;
 import com.google.gson.Gson;
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.PreparedQuery;
-import com.google.appengine.api.datastore.Query;
-import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 /** Servlet that handles search data */
 @WebServlet("/search")
 public class SearchServlet extends HttpServlet {
-  
   Search searches = new Search();
-  Query query = new Query("Search");
   UserService userService = UserServiceFactory.getUserService();
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Load searches from Datastore
-    DatastoreService ds = DatastoreServiceFactory.getDatastoreService();
-    PreparedQuery results = ds.prepare(query);
-
-    Search existing_searches = new Search();
-    for (Entity entity : results.asIterable()) {
-      String user = (String) entity.getProperty("user");
-      String search = (String) entity.getProperty("search");
-      existing_searches.addToSearchList(user, search);
-    }
     response.setContentType("application/json");
-    String json = new Gson().toJson(existing_searches.getSearches());
+    String json = new Gson().toJson(searches.getSearches());
     response.getWriter().println(json);
   }
 
@@ -65,25 +46,16 @@ public class SearchServlet extends HttpServlet {
     String search = getParameter(request, "search-input", "");
     response.setContentType("text/html;");
 
-    //get current user's email address
+    // Get current user's email address
     String user = userService.getCurrentUser().getEmail();
 
-    //add user's new search to the search HashMap
+    // Store user's new search
     searches.addToSearchList(user, search);
     response.getWriter().println(searches.getSearches());
 
-    //store searches as entities in Datastore
-    Entity searchEntity = new Entity("Search");
-    searchEntity.setProperty("user", user);
-    searchEntity.setProperty("search", search);
-
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    datastore.put(searchEntity);
-
-    // Redirect back to the HTML page.
+    // Redirect back to the HTML page
     response.sendRedirect("/index.html");
   }
-
 
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
     String value = request.getParameter(name);

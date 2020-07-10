@@ -15,38 +15,44 @@
 package com.google.sps.data;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.HashMap;
-import java.util.Map;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
 
 /** Class containing user search history. */
-
 public final class Search {
-  // List of users and their search history
-  // key = user's email, value = list of user's previous searches
-  private final Map<String, List<String>> searches = new HashMap<>();
-  
+  // List of user's search history
+  private final List<String> searches = new ArrayList<>();
+  private String userEmail = "";
+
+  DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+  Query query = new Query("Search");
+
   public void addToSearchList(String user, String search) {
-    List<String> existingSearches = searches.get(user); 
-    //if list does not exist, create it
-    if (existingSearches == null) {
-        existingSearches = new ArrayList<String>();
-        existingSearches.add(search);
-        searches.put(user, existingSearches);
-    } else if (!existingSearches.contains(search)){
-        //if search does not exist in the list, add it
-        existingSearches.add(search);
-        searches.put(user, existingSearches);
+    userEmail = user; 
+    // Store search in Datastore
+    Entity searchEntity = new Entity("Search");
+    searchEntity.setProperty("user", user);
+    searchEntity.setProperty("search", search);   
+    datastore.put(searchEntity);
+  }
+
+  public List<String> getSearches() {
+    // Load user's searches from Datastore
+    PreparedQuery results = datastore.prepare(query);
+    for (Entity entity : results.asIterable()) {
+      String user = (String) entity.getProperty("user");
+      if (user.equals(userEmail)) {
+        String search = (String) entity.getProperty("search");
+        if (!searches.contains(search)) {
+            searches.add(search);
+        }
+      }
     }
-    System.out.println(searches);
-  }
-
-  public Map<String, List<String>> getSearches() {
-      return searches;
-  }
-
-  public List<String> getSearchHistory(String user) {
-    List<String> searchHistory = searches.get(user);
-    return searchHistory;
+    return searches;
   }
 
 }
