@@ -34,9 +34,8 @@ public class FavoritesServlet extends HttpServlet {
     // Get current user's email address
     String user = userService.getCurrentUser().getEmail();
 
-    // !! Check on this !!
     // Get the restaurant ID from the server
-    String placeID = request;
+    String placeID = request.getParameter("placeID");
 
     // Store user's favorited restaurant
     favorites.addToFavoritesList(user, placeID);
