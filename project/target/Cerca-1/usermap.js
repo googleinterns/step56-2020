@@ -2,28 +2,16 @@
 // max distance
 // use maps, applys to make userMap
 
-<<<<<<< HEAD
 
-const apiKey = "AIzaSyDEVKOx6yO8pM10Jj39HXSkS4HYEv8nBJ8";
-var currentZoom = 6;
+var currentZoom = 12;
 var currentRadius = 5000;
-var currentLocation;
-var nearbyMarkerList = [];
-var searchedMarkerList = [];
+var numberOfPlaces = 10;
+var unitDistance = 1;
+var markerList = [];
+var searchQuery = "restaurant";
+var currentLocation, placesPromise;
 
-//List of Places Objects for other processing
-//var nearbyPlaces = [];
-
-//List of IDs for Tamajong
-//var usermap = [];
-
-//Promise for a list of nearby places
-var nearbyPlacesPromise;
-
-
-//Promise for a list of searched places
-var searchedPlacesPromise;
-
+var infoWindow = new google.maps.InfoWindow;
 var map = new google.maps.Map(document.getElementById('map'), {
 	center: {lat: 0, lng: 0},
 	zoom: 6
@@ -31,10 +19,31 @@ var map = new google.maps.Map(document.getElementById('map'), {
 
 async function initMap() {
 	currentLocation = await getCurrentLocation();
-	map.setCenter(currentLocation);
-	displayMap(map,currentZoom);
-	nearbyPlacesPromise = getSearchedPlaces(map, currentRadius, 'restaurant');
-	nearbyPlacesPromise.then((li) => li.forEach((x) => addMarker(nearbyMarkerList, map, x.geometry.location, x.name, x.icon)));
+	infoWindow.open(map);
+	infoWindow.setContent("Current Location");
+	resetMap(currentLocation, searchQuery, currentZoom, currentRadius, numberOfPlaces);
+}
+
+function resetMap(center, query, zoom, radius, numberOfPlaces) {
+	centerAndZoom(currentLocation, currentZoom);
+	clearMarkers();
+	displaySearch(searchQuery, currentRadius, numberOfPlaces);
+}
+
+function displaySearch(query, radius, displayNumber) {
+	placesPromise = getSearchedPlaces(map, radius, query);
+	placesPromise.then((li) => li.slice(0, displayNumber).forEach((x) => markerList.push(addMarker(map, x.geometry.location, x.name, x.icon, x.id))));
+}
+
+function clearMarkers() {
+	markerList.forEach((x) => x.setMap(null));
+	markerList = [];
+}
+
+function centerAndZoom(center, zoom) {
+	map.setCenter(center);
+	map.setZoom(zoom);
+	infoWindow.setPosition(map.center);
 }
 
 function getCurrentLocation() {
@@ -53,14 +62,6 @@ function getCurrentLocation() {
 	} else {
 		console.log("Unsupported browser");
 	}
-}
-
-function displayMap(map ,zoom) {
-	var infoWindow = new google.maps.InfoWindow;
-	map.setZoom(zoom);
-	infoWindow.setPosition(map.center);
-	infoWindow.setContent('Current Location');
-	infoWindow.open(map);
 }
 
 function getNearbyPlaces(map, radius, type) {
@@ -94,49 +95,32 @@ function placesCallback(results, pstatus) {
 }
 
 
-function addMarker(markerList, map, location, labelText, imageLink) {
+function addMarker(map, location, labelText, imageLink, id) {
   var marker = new google.maps.Marker({
     position: location,
     label: labelText,
     icon: imageLink,
     map: map
   });
-  markerList.push(marker);
+  marker.addListener("click", function() {
+	  showCatalogue(id);
+  });
+  return marker;
 }
 
 function displaySearchResults() {
-	searchedPlacesPromise = getSearchedPlaces(map, currentRadius, document.getElementById("searchbox").value);
-	nearbyMarkerList.forEach((x) => x.setMap(null));
-	searchedPlacesPromise.then((li) => li.forEach((x) => addMarker(searchedMarkerList, map, x.geometry.location, x.name, x.icon)));
+	searchQuery = document.getElementById("searchbox").value;
+	clearMarkers();
+	displaySearch(searchQuery, currentRadius, numberOfPlaces);
 }
-
 
 initMap();
 
+//Every 30 seconds, if the new location is unitDistance away from the previous location the map reloads, distance measured in taxicab metric
+setInterval(async function(){ 
+	newCurrentLocation = await getCurrentLocation();
+	if(Math.abs(newCurrentLocation.lat - currentLocation.lat) + Math.abs(newCurrentLocation.lng - currentLocation.lng) >= unitDistance && nearbyMode == 1) {
+		resetMap(newCurrentLocation, searchQuery, currentZoom, currentRadius, numberOfPlaces);
+	}
+}, 1 * 30 * 1000);
 
-
-=======
-const apiKey = "AIzaSyDEVKOx6yO8pM10Jj39HXSkS4HYEv8nBJ8";
-
-function initMap() {
-  // Create the map.
-  const map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 7,
-    center: {lat: 52.632469, lng: -1.689423},
-  });
-
-  // Load the stores GeoJSON onto the map.
-  map.data.loadGeoJson('stores.json', {idPropertyName: 'storeid'});
-
-  // Define the custom marker icons, using the store's "category".
-  map.data.setStyle((feature) => {
-    return {
-      icon: {
-        url: `img/icon_${feature.getProperty('category')}.png`,
-        scaledSize: new google.maps.Size(64, 64),
-      },
-    };
-  });
-}
-
->>>>>>> f97ca455375bf50820c07e21157e111466f9ddf8
