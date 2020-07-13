@@ -14,6 +14,11 @@
 
 var user = "Guest";
 
+function start () {
+    displaySearchHistory();
+    displayFavorites();
+}
+
 // Fetches the login status from the servlet. If user is logged in, display logout link
 // If user is not logged in, display login link
 function fetchLoginStatus () {
@@ -48,6 +53,24 @@ function createHistoryElement(search) {
   const searchElement = document.createElement('a');
   searchElement.innerText = search;
   return searchElement;
+}
+
+// Display user's favorite restaurants in "Favorites" bar
+function displayFavorites() {
+    fetch('/favorites').then(response => response.json()).then((favorites) => {
+        const favoritesBar = document.getElementById('favorites-bar');
+        for (const fav in favorites) {
+        favoritesBar.appendChild(createFavoritesElement(favorites[fav]));
+        }
+    });
+}
+
+// Creates a favorites bar element
+// will add more detail
+function createFavoritesElement(favorite) {
+  const favElement = document.createElement('a');
+  favElement.innerText = favorite;
+  return favElement;
 }
 
 // Called once user has selected their preferred filters and pressed the Search button
