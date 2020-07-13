@@ -33,5 +33,12 @@ dropbtn {
 
 .dropdown:hover .dropbtn {background-color: #3e8e41;}
 
-
-
+#map {
+	height: 30%;
+	width: 30%
+}
+html, body {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}

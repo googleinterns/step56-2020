@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 com/google/sps/data/Search.class
 com/google/sps/servlets/SearchServlet.class
 com/google/sps/servlets/LoginServlet.class
 com/google/sps/data/Login.class
+=======
+>>>>>>> mapFeatures3
