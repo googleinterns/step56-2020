@@ -86,16 +86,16 @@ function placesCallback(results, pstatus) {
 
 
 function addMarker(map, location, labelText, imageLink, id) {
-  var marker = new google.maps.Marker({
-    position: location,
-    label: labelText,
-    icon: imageLink,
-    map: map
-  });
-  marker.addListener("click", function() {
-	  showCatalogue(id);
-  });
-  return marker;
+	var marker = new google.maps.Marker({
+		position: location,
+		label: labelText,
+		icon: imageLink,
+		map: map
+	});
+	marker.addListener("click", function() {
+		showCatalogue(id);
+	});
+	return marker;
 }
 
 function displaySearchResults() {
