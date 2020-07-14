@@ -5,10 +5,10 @@
     <title>Cerca</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEVKOx6yO8pM10Jj39HXSkS4HYEv8nBJ8&callback=execute&libraries=places&v=weekly"
-      defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEVKOx6yO8pM10Jj39HXSkS4HYEv8nBJ8&callback=execute&libraries=places&v=weekly"
+        defer
     ></script>
-    <script src="script.js"></script>
+    <script src="catalog.js"></script>
 </head>
 <body style="max-width: fit-content;">
     <div class="container-fluid" style="text-align:center;">
@@ -42,7 +42,6 @@
                     type="text"
                     placeholder="Enter a location"
                 /><br/>
-                <strong>Place ID:</strong> <span id="place-id" onchange="resetPhotoURLs()" ></span><br/>
                 <div class="gallery">
                     <img id="image" style="margin-bottom:20px;"></img><br>
                     <a href="#" class="previous round" 
