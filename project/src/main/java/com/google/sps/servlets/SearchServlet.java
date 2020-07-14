@@ -52,9 +52,6 @@ public class SearchServlet extends HttpServlet {
     // Store user's new search
     searches.addToSearchList(user, search);
     response.getWriter().println(searches.getSearches());
-
-    // Redirect back to the HTML page
-    response.sendRedirect("/index.html");
   }
 
   private String getParameter(HttpServletRequest request, String name, String defaultValue) {
