@@ -53,7 +53,19 @@
             <div class="col py-3 px-lg-5 border bg-light">
                 <div id="login-greeting"></div>
                 <div id="login-container"></div> <br><br>
-                Favorites: <br> <div id="favorites-bar"></div>
+                Favorites: <br> 
+                <div id="favorites-bar">
+                    <a onclick="openModal()"> Example </a>
+                    <!-- Modal -->
+                    <div id="favoritesModal" class="modal">
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                            <span class="close" onclick="closeModal()">&times;</span>
+                            <button type="button" onclick="visitPage()">Go to page</button> &nbsp;
+                            <button type="button" onclick="shareableURL()">Get shareable URL</button>                                              
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
