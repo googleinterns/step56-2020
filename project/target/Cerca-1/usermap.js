@@ -5,7 +5,8 @@
 
 var currentZoom = 12;
 var currentRadius = 5000;
-var numberOfPlaces = 1000;
+// Google Places api has a cap of 20 results
+var numberOfPlaces = 20;
 var unitDistance = 1;
 var markerList = [];
 var searchQuery = "restaurant";
