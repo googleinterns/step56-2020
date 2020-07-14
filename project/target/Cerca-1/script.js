@@ -60,7 +60,7 @@ function displayFavorites() {
     fetch('/favorites').then(response => response.json()).then((favorites) => {
         const favoritesBar = document.getElementById('favorites-bar');
         for (const fav in favorites) {
-        favoritesBar.appendChild(createFavoritesElement(favorites[fav]));
+            favoritesBar.appendChild(createFavoritesElement(favorites[fav]));
         }
     });
 }

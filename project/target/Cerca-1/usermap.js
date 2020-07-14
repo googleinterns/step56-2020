@@ -3,10 +3,6 @@
 // use maps, applys to make userMap
 
 
-<<<<<<< HEAD
-const apiKey = "AIzaSyDEVKOx6yO8pM10Jj39HXSkS4HYEv8nBJ8";
-
-=======
 var currentZoom = 12;
 var currentRadius = 5000;
 var numberOfPlaces = 10;
@@ -68,16 +64,6 @@ function getCurrentLocation() {
 	}
 }
 
-function getNearbyPlaces(map, radius, type) {
-	request = {
-		location: map.center,
-		radius: String(radius),
-		type: [type]
-	};
-	service = new google.maps.places.PlacesService(map);
-	return new Promise((resolve, reject) => service.nearbySearch(request, (results, pstatus) => resolve(placesCallback(results, pstatus))));
-}
-
 function getSearchedPlaces(map, radius, query) {
 	request = {
 		location: map.center,
@@ -100,16 +86,16 @@ function placesCallback(results, pstatus) {
 
 
 function addMarker(map, location, labelText, imageLink, id) {
-  var marker = new google.maps.Marker({
-    position: location,
-    label: labelText,
-    icon: imageLink,
-    map: map
-  });
-  marker.addListener("click", function() {
-	  showCatalogue(id);
-  });
-  return marker;
+	var marker = new google.maps.Marker({
+		position: location,
+		label: labelText,
+		icon: imageLink,
+		map: map
+	});
+	marker.addListener("click", function() {
+		showCatalogue(id);
+	});
+	return marker;
 }
 
 function displaySearchResults() {
@@ -127,5 +113,4 @@ setInterval(async function(){
 		resetMap(newCurrentLocation, searchQuery, currentZoom, currentRadius, numberOfPlaces);
 	}
 }, 1 * 30 * 1000);
->>>>>>> mapFeatures3
 

@@ -1,12 +1,6 @@
-<<<<<<< HEAD
 com/google/sps/data/Favorites.class
 com/google/sps/servlets/FavoritesServlet.class
-=======
-<<<<<<< HEAD
->>>>>>> 6fd96a5299afc67bdd9c62501a1d497243eeaef0
 com/google/sps/data/Search.class
 com/google/sps/servlets/SearchServlet.class
 com/google/sps/servlets/LoginServlet.class
 com/google/sps/data/Login.class
-=======
->>>>>>> mapFeatures3
