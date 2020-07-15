@@ -1,85 +1,85 @@
-var map;
-var autocomplete;
-var photoURLS; 
-var image;
+// Copyright 2019 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     https://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-function execute() {
-    initMap();
-    search();
-    getCatalog();
+var user = "Guest";
+
+function start () {
+    displaySearchHistory();
+    displayFavorites();
 }
 
-function initMap() {
-    map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: -33.866, lng: 151.196 },
-        zoom: 15
-    });
-}
-
-function search() {
-    // autocompleted suggestions of user searches
-    var input = document.getElementById("pac-input");
-    autocomplete = new google.maps.places.Autocomplete(input);
-    autocomplete.setFields(["place_id", "geometry"]);
-}
-
-function getCatalog() {
-    //returns photos associated with user search
-    autocomplete.addListener("place_changed", function() {
-        var place = autocomplete.getPlace();
-
-        if (!place.geometry) {
-            return;
+// Fetches the login status from the servlet. If user is logged in, display logout link
+// If user is not logged in, display login link
+function fetchLoginStatus () {
+    fetch('/login').then(response => response.json()).then((login) => {
+        const greeting = document.getElementById('login-greeting');
+        const loginContainer = document.getElementById('login-container');
+        user = login.loginInfo[0];
+        var link = login.loginInfo[1];
+        greeting.innerText = "Hello, " + user + "!";
+        if (user.localeCompare("Guest") != 0){
+            loginContainer.innerHTML = '<a href="' + link + '">Logout here</a>';
+        } else {
+            loginContainer.innerHTML = '<a href="' + link + '">Login here</a>';
         }
-
-        var search = document.getElementById("place-id").innerText = place.place_id;
-
-        var request = {
-            placeId: place.place_id,
-            fields: ["photos"]
-        };
-
-        service = new google.maps.places.PlacesService(map);
-        service.getDetails(request, function callback(results, status) { // this request will return an array of photos as a result
-            if (status == google.maps.places.PlacesServiceStatus.OK) {
-                photos = results.photos;
-                if (!photos) {
-                    return;
-                }
-
-                photoURLS = [];
-                console.log(photoURLS);
-                for (var i = 0; i < photos.length; i++){
-                    var url = photos[i].getUrl({maxWidth: 500, maxHeight: 500})
-                    photoURLS.push(url);
-                    console.log("added new url: ", url);
-                }
-                image = document.getElementById("image");
-                image.setAttribute("src", photoURLS[0]);
-            }
-        });
     });
 }
 
-var i = 0;
+fetchLoginStatus();
 
-function next() {
-    i += 1;
-    if (i < photoURLS.length) {
-        image = document.getElementById("image");
-        image.setAttribute("src", photoURLS[i]);
+// When "History" button is hovered over, display current user's search history
+function displaySearchHistory() {
+  fetch('/search').then(response => response.json()).then((searches) => {
+    const history = document.getElementById('history-content');
+    for (const search in searches) {
+        history.appendChild(createHistoryElement(searches[search]));
     }
+  });
 }
 
-function previous() {
-    i -= 1;
-    if (i > 0) {
-        image = document.getElementById("image");
-        image.setAttribute("src", photoURLS[i]);
-    }
+// Creates a search history element
+function createHistoryElement(search) {
+  const searchElement = document.createElement('a');
+  searchElement.innerText = search;
+  return searchElement;
 }
 
-// function resetPhotoURLs() {
-//     photoURLS.length = 0;
-//     console.log("this function works")
-// }
+// Display user's favorite restaurants in "Favorites" bar
+function displayFavorites() {
+    fetch('/favorites').then(response => response.json()).then((favorites) => {
+        const favoritesBar = document.getElementById('favorites-bar');
+        for (const fav in favorites) {
+            favoritesBar.appendChild(createFavoritesElement(favorites[fav]));
+        }
+    });
+}
+
+// Creates a favorites bar element
+// will add more detail
+function createFavoritesElement(favorite) {
+  const favElement = document.createElement('a');
+  favElement.innerText = favorite;
+  return favElement;
+}
+
+// Called once user has selected their preferred filters and pressed the Search button
+// Stores filter choices
+function filterChoices() {
+    const radius = document.getElementById("mySelectRadius").selectedIndex;
+    const type = document.getElementById("mySelectType").selectedIndex + 4;
+    const price = document.getElementById("mySelectPrice").selectedIndex + 9;
+    console.log(document.getElementsByTagName("option")[radius].value);
+    console.log(document.getElementsByTagName("option")[type].value);
+    console.log(document.getElementsByTagName("option")[price].value);
+}
