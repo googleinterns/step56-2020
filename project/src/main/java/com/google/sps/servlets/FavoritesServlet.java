@@ -31,6 +31,15 @@ public class FavoritesServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {    
+    response.setContentType("application/json");
+    Gson gson = new Gson();
+    String json = gson.toJson(favorites.getFavorites());
+    response.getWriter().println(json);
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {    
+    System.out.println("please");
     // Get current user's email address
     String user = userService.getCurrentUser().getEmail();
 
@@ -39,10 +48,6 @@ public class FavoritesServlet extends HttpServlet {
 
     // Store user's favorited restaurant
     favorites.addToFavoritesList(user, placeID);
-
-    response.setContentType("application/json");
-    Gson gson = new Gson();
-    String json = gson.toJson(favorites.getFavorites());
-    response.getWriter().println(json);
   }
+
 }

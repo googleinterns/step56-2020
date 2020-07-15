@@ -94,17 +94,22 @@ function addMarker(map, location, labelText, imageLink, id) {
 		map: map
 	});
 	marker.addListener("click", function() {
-		showCatalogue(id);
+		// showCatalogue(id);
+		var d = document.getElementById("add-favorite");
+		d.hidden = false;
+		d.innerText = "Add To Favorite";
+		d.onclick = () => addFavorite(id);
+		console.log(d);
 	});
 	return marker;
 }
 
 function displaySearchResults() {
 	searchQuery = document.getElementById("search-input").value;
-        var oReq = new XMLHttpRequest();
-        oReq.open("POST", "/search");
-        oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        oReq.send(`search-input=${searchQuery}`);
+	var oReq = new XMLHttpRequest();
+	oReq.open("POST", "/search");
+	oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	oReq.send(`search-input=${searchQuery}`);
 	console.log("display test ",searchQuery);
 	clearMarkers();
 	displaySearch(searchQuery, currentRadius, numberOfPlaces);
