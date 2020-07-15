@@ -95,6 +95,7 @@ function addMarker(map, location, labelText, imageLink, id) {
 	});
 	marker.addListener("click", function() {
 		showCatalogue(id);
+		
 	});
 	return marker;
 }
