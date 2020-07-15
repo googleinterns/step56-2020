@@ -5,7 +5,8 @@
 
 var currentZoom = 12;
 var currentRadius = 5000;
-var numberOfPlaces = 10;
+// Google Places api has a cap of 20 results
+var numberOfPlaces = 20;
 var unitDistance = 1;
 var markerList = [];
 var searchQuery = "restaurant";
@@ -99,10 +100,24 @@ function addMarker(map, location, labelText, imageLink, id) {
 }
 
 function displaySearchResults() {
-	searchQuery = document.getElementById("searchbox").value;
+	searchQuery = document.getElementById("search-input").value;
+        var oReq = new XMLHttpRequest();
+        oReq.open("POST", "/search");
+        oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        oReq.send(`search-input=${searchQuery}`);
+	console.log("display test ",searchQuery);
 	clearMarkers();
 	displaySearch(searchQuery, currentRadius, numberOfPlaces);
 }
+
+function radiusChange(sel) {
+	currentRadius = parseInt(sel.value);
+	console.log("Test ",currentRadius);
+	clearMarkers();
+	displaySearch(searchQuery, currentRadius, numberOfPlaces);
+}
+
+
 
 initMap();
 
