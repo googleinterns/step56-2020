@@ -13,6 +13,7 @@
 // limitations under the License.
 
 var user = "Guest";
+var placeID = "";
 
 function start () {
     displaySearchHistory();
@@ -67,9 +68,10 @@ function displayFavorites() {
 
 // Creates a favorites bar element
 function createFavoritesElement(favorite) {
+  placeID = favorite;
   const favElement = document.createElement('a');
   favElement.innerText = favorite;
-  //favElement.addEventListener("click", openModal(), false);
+  favElement.addEventListener("click", openModal(), false);
   return favElement;
 }
 
@@ -93,13 +95,17 @@ window.onclick = function(event) {
 
 // Go to restaurant page
 function visitPage() {
-    //
+    //TO-DO: send to restaurant's page
+    //placeID
 }
 
 // Constructs a shortened URL that leads to the chosen restaurant
 function shareableURL() {
     const currentURL = window.location.href;
+    //TO-DO: create shareableURL
     //shareableURL = ;
+    //placeID
+    
     alert("Shareable link: " + currentURL);
 }
 
