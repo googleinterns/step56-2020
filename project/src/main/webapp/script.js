@@ -13,6 +13,7 @@
 // limitations under the License.
 
 var user = "Guest";
+var placeID = "";
 
 function start () {
     displaySearchHistory();
@@ -55,6 +56,15 @@ function createHistoryElement(search) {
   return searchElement;
 }
 
+// Adds the selected restaurant to favorites
+function addFavorite(placeID) {
+	var oReq = new XMLHttpRequest();
+        oReq.open("POST", "/favorites");
+        oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        oReq.send(`placeID=${placeID}`);
+}
+
+
 // Display user's favorite restaurants in "Favorites" bar
 function displayFavorites() {
     fetch('/favorites').then(response => response.json()).then((favorites) => {
@@ -66,11 +76,43 @@ function displayFavorites() {
 }
 
 // Creates a favorites bar element
-// will add more detail
 function createFavoritesElement(favorite) {
+  placeID = favorite;
   const favElement = document.createElement('a');
   favElement.innerText = favorite;
+  favElement.addEventListener("click", openModal(), false);
   return favElement;
+}
+
+// Modal opens displaying two options: go to restaurant page, or get shareable link
+function openModal () {
+    document.getElementById("favoritesModal").style.display = "block";
+}
+
+// When the user clicks on the modal's X button, close it
+function closeModal () {
+    document.getElementById("favoritesModal").style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  var modal = document.getElementById("favoritesModal");
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+// Go to restaurant page
+function visitPage() {
+    const shareableURL = window.location.href+"?placeID=<placeID>";
+    window.location.replace(shareableURL); 
+}
+
+// Constructs a shortened URL that leads to the chosen restaurant
+function shareableURL() {
+    //const currentURL = window.location.href;
+    const shareableURL = window.location.href+"?placeID=<placeID>";
+    alert("Shareable link: " + shareableURL);
 }
 
 // Called once user has selected their preferred filters and pressed the Search button
@@ -82,4 +124,11 @@ function filterChoices() {
     console.log(document.getElementsByTagName("option")[radius].value);
     console.log(document.getElementsByTagName("option")[type].value);
     console.log(document.getElementsByTagName("option")[price].value);
+}
+
+// Displays store if placeID is present in url
+
+params = new Map(window.location.search.slice(1,Infinity).split("&").map(x => x.split("=")));
+if (params.has("placeID") && map.get("placeID") != undefined) {
+	showCatalogue(params.get("placeID"));
 }

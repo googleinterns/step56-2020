@@ -95,16 +95,23 @@ function addMarker(map, location, labelText, imageLink, id) {
 	});
 	marker.addListener("click", function() {
 		showCatalog(id);
+		var d = document.getElementById("add-favorite");
+		d.hidden = false;
+		d.innerText = "Add To Favorite";
+		d.onclick = () => addFavorite(id);
 	});
 	return marker;
 }
 
+function addFavorite(id) {
+	var oReq = new XMLHttpRequest();
+	oReq.open("POST", "/favorites");
+	oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	oReq.send(`placeID=${id}`);
+}
+
 function displaySearchResults() {
 	searchQuery = document.getElementById("search-input").value;
-        var oReq = new XMLHttpRequest();
-        oReq.open("POST", "/search");
-        oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        oReq.send(`search-input=${searchQuery}`);
 	clearMarkers();
 	displaySearch(searchQuery, currentRadius, numberOfPlaces);
 }
