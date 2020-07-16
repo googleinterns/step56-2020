@@ -94,7 +94,7 @@ function addMarker(map, location, labelText, imageLink, id) {
 		map: map
 	});
 	marker.addListener("click", function() {
-		showCatalogue(id);
+		showCatalog(id);
 	});
 	return marker;
 }
@@ -105,19 +105,15 @@ function displaySearchResults() {
         oReq.open("POST", "/search");
         oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         oReq.send(`search-input=${searchQuery}`);
-	console.log("display test ",searchQuery);
 	clearMarkers();
 	displaySearch(searchQuery, currentRadius, numberOfPlaces);
 }
 
 function radiusChange(sel) {
 	currentRadius = parseInt(sel.value);
-	console.log("Test ",currentRadius);
 	clearMarkers();
 	displaySearch(searchQuery, currentRadius, numberOfPlaces);
 }
-
-
 
 initMap();
 

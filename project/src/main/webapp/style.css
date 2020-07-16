@@ -1,3 +1,28 @@
+.gallery a {
+  text-decoration: none;
+  display: inline-block;
+  padding: 8px 16px;
+}
+
+.gallery a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.previous {
+  background-color: #f1f1f1;
+  color: black;
+}
+
+.next {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.round {
+  border-radius: 50%;
+}
+
 .dropbtn {
   background-color: #4CAF50;
   color: white;
@@ -38,12 +63,4 @@ html, body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
-}
-
-.row .mx-lg-n5 {
-	height: 200px;
-}
-
-#JSwork {
-	height: 200px;
 }
