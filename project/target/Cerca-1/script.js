@@ -13,6 +13,12 @@
 // limitations under the License.
 
 var user = "Guest";
+var placeID = "";
+
+function start () {
+    displaySearchHistory();
+    displayFavorites();
+}
 
 // Fetches the login status from the servlet. If user is logged in, display logout link
 // If user is not logged in, display login link
@@ -48,6 +54,59 @@ function createHistoryElement(search) {
   const searchElement = document.createElement('a');
   searchElement.innerText = search;
   return searchElement;
+}
+
+// Display user's favorite restaurants in "Favorites" bar
+function displayFavorites() {
+    fetch('/favorites').then(response => response.json()).then((favorites) => {
+        const favoritesBar = document.getElementById('favorites-bar');
+        for (const fav in favorites) {
+            favoritesBar.appendChild(createFavoritesElement(favorites[fav]));
+        }
+    });
+}
+
+// Creates a favorites bar element
+function createFavoritesElement(favorite) {
+  placeID = favorite;
+  const favElement = document.createElement('a');
+  favElement.innerText = favorite;
+  favElement.addEventListener("click", openModal(), false);
+  return favElement;
+}
+
+// Modal opens displaying two options: go to restaurant page, or get shareable link
+function openModal () {
+    document.getElementById("favoritesModal").style.display = "block";
+}
+
+// When the user clicks on the modal's X button, close it
+function closeModal () {
+    document.getElementById("favoritesModal").style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  var modal = document.getElementById("favoritesModal");
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+
+// Go to restaurant page
+function visitPage() {
+    //TO-DO: send to restaurant's page
+    //placeID
+}
+
+// Constructs a shortened URL that leads to the chosen restaurant
+function shareableURL() {
+    const currentURL = window.location.href;
+    //TO-DO: create shareableURL
+    //shareableURL = ;
+    //placeID
+    
+    alert("Shareable link: " + currentURL);
 }
 
 // Called once user has selected their preferred filters and pressed the Search button
