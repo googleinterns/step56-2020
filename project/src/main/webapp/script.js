@@ -129,11 +129,9 @@ function displayPopular() {
     fetch('/popular').then(response => response.json()).then((popular) => {
         const popularList = document.getElementById('popular-list');
         
+        console.log("popular hashmap: " + popular);
         // Get list of restaurants with the 5 highest popularity scores
-        var popScores = [];
-        for (const score in popular.values()) {
-            popScores.push(score);
-        }
+        var popScores = popular.values();
         const max = 5;
         if (popScores.length < 5) {
             max = popScores.length;

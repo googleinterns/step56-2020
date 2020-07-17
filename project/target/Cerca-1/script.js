@@ -119,24 +119,9 @@ function shareableURL() {
 // Called once user has selected their preferred filters and pressed the Search button
 // Stores filter choices
 function filterChoices() {
-    /*
-    const radius = document.getElementById("mySelectRadius").selectedIndex;
-    const type = document.getElementById("mySelectType").selectedIndex; //+ 4
-    const price = document.getElementById("mySelectPrice").selectedIndex; //+ 9
-    console.log(radius);
-    console.log(type);
-    console.log(price);
-    console.log(document.getElementsByTagName("option")[radius].value);
-    console.log(document.getElementsByTagName("option")[type].value);
-    console.log(document.getElementsByTagName("option")[price].value);
-    console.log("_____"); */
-
     const radius = document.querySelector('#mySelectRadius');
     const type = document.querySelector('#mySelectType');
     const price = document.querySelector('#mySelectPrice');
-    console.log(radius.value);
-    console.log(type.value);
-    console.log(price.value);
 }
 
 // Only display the top 5 most popular restaurants
@@ -145,10 +130,7 @@ function displayPopular() {
         const popularList = document.getElementById('popular-list');
         
         // Get list of restaurants with the 5 highest popularity scores
-        var popScores = [];
-        for (const score in popular.values()) {
-            popScores.push(score);
-        }
+        var popScores = popular.values();
         const max = 5;
         if (popScores.length < 5) {
             max = popScores.length;
