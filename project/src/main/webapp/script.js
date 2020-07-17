@@ -18,6 +18,7 @@ var placeID = "";
 function start () {
     displaySearchHistory();
     displayFavorites();
+    displayPopular();
 }
 
 // Fetches the login status from the servlet. If user is logged in, display logout link
@@ -126,6 +127,36 @@ function filterChoices() {
     console.log(document.getElementsByTagName("option")[price].value);
 }
 
+// Only display the top 5 most popular restaurants
+function displayPopular() {
+    fetch('/popular').then(response => response.json()).then((popular) => {
+        const popularList = document.getElementById('popular-list');
+        
+        // Get list of restaurants with the 5 highest popularity scores
+        var popScores = [];
+        for (const score in popular.values()) {
+            popScores.push(score);
+        }
+        const max = 5;
+        if (popScores.length < 5) {
+            max = popScores.length;
+        } 
+        for (var i = 0; i < max; i++) {
+            const highestScore = Math.max(popScores);
+            popScores.remove(highestScore);
+            const restaurantName = popular.getKey(highestScore);
+            popularList.appendChild(createPopularElement(restaurantName, highestScore));
+        }
+    });
+}
+
+// Creates a Popular List element
+function createPopularElement(restaurant, score) {
+  const popElement = document.createElement('a');
+  popElement.innerText = restaurant + "; Favorited by " + score + " users";
+  popElement.addEventListener("click", openModal(), false);
+  return popElement;
+}
 // Displays store if placeID is present in url
 
 params = new Map(window.location.search.slice(1,Infinity).split("&").map(x => x.split("=")));
