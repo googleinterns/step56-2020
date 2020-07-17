@@ -8,7 +8,7 @@
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script src="script.js"></script>
 </head>
-<body onload="displaySearchHistory()" style="max-width: fit-content;">
+<body onload="start()" style="max-width: fit-content;">
     <div class="container-fluid" style="text-align:center;">
         <h1 style="color:rgb(36, 168, 240);">CERCA</h1>
     </div>
@@ -51,20 +51,23 @@
                 </div>
             </div>
             <div class="col py-3 px-lg-5 border bg-light">
-            <div id="login-greeting"></div>
-            <div id="login-container"></div> <br>
-                <form>
-                    <div class="form-group">
-                        <label for="InputEmail1">Email address</label>
-                        <input type="email" class="form-control form-control-sm" id="InputEmail1" aria-describedby="emailHelp">
+                <div id="login-greeting"></div>
+                <div id="login-container"></div> <br><br>
+                Favorites: <br> 
+                <div id="favorites-bar">
+                    <a onclick="openModal()"> Example </a>
+                    <!-- Modal -->
+                    <div id="favoritesModal" class="modal">
+                        <!-- Modal content -->
+                        <div class="modal-content">
+                            <span class="close" onclick="closeModal()">&times;</span>
+                            <button type="button" onclick="visitPage()">Go to page</button> &nbsp;
+                            <button type="button" onclick="shareableURL()">Get shareable URL</button>                                              
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="InputPassword1">Password</label>
-                        <input type="password" class="form-control form-control-sm" id="InputPassword1" >
-                    </div>
-                    <button type="submit" class="btn btn-primary">Login</button>
-                    <small id="emailHelp" class="form-text text-muted"><a href="/nourl">Sign Up</a></small>
-                </form>
+                </div> <br><br>
+                Popular: <br>
+                <div id="popular-list">
             </div>
         </div>
     </div>
