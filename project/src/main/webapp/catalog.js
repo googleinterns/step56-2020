@@ -13,12 +13,15 @@ function showCatalog(placeID) {
             placeId: placeID,
             fields: ["photos"]
         };
+	console.log("Yep");
 
         service = new google.maps.places.PlacesService(map);
         service.getDetails(request, function callback(results, status) { // this request will return an array of photos as a result
+	console.log("Yep");
             if (status == google.maps.places.PlacesServiceStatus.OK) {
                 photos = results.photos;
                 if (!photos) {
+                    console.log("No Photos");
                     return;
                 }
 
@@ -30,8 +33,10 @@ function showCatalog(placeID) {
                     console.log("added new url: ", url);
                 }
                 image = document.getElementById("image");
-                image.setAttribute("src", photoURLS[0]);
-            }
+                image.src = photoURLS[0];
+            } else {
+		    console.log("why", status);
+	    }
         });
     };
 

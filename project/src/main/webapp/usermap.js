@@ -108,6 +108,7 @@ function addServerInfo(id) {
 	oReq.open("POST", "/favorites");
 	oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	oReq.send(`placeID=${id}`);
+
 	var oReq = new XMLHttpRequest();
 	oReq.open("POST", "/popular");
 	oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
