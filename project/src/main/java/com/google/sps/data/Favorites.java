@@ -29,12 +29,13 @@ public final class Favorites {
   DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
   Query query = new Query("Favorites");
 
-  public void addToFavoritesList(String user, String placeID) {
+  public void addToFavoritesList(String user, String placeID, String placeName) {
     userEmail = user; 
     // Store favorite restaurant in Datastore
     Entity favoriteEntity = new Entity("Favorites");
     favoriteEntity.setProperty("user", user);
-    favoriteEntity.setProperty("favorite", placeID);   
+    favoriteEntity.setProperty("favoriteID", placeID); 
+    favoriteEntity.setProperty("favoriteName", placeName);     
     datastore.put(favoriteEntity);
   }
 
@@ -45,7 +46,7 @@ public final class Favorites {
     for (Entity entity : results.asIterable()) {
       String user = (String) entity.getProperty("user");
       if (user.equals(userEmail)) {
-        String fav = (String) entity.getProperty("favorite");
+        String fav = (String) entity.getProperty("favoriteName");
         if (!favorites.contains(fav)) {
             favorites.add(fav);
         }

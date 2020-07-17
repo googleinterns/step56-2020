@@ -98,21 +98,21 @@ function addMarker(map, location, labelText, imageLink, id) {
 		var d = document.getElementById("add-favorite");
 		d.hidden = false;
 		d.innerText = "Add To Favorite";
-		d.onclick = () => addServerInfo(id);
+		d.onclick = () => addServerInfo(id, labelText);
 	});
 	return marker;
 }
 
-function addServerInfo(id) {
+function addServerInfo(id, name) {
 	var oReq = new XMLHttpRequest();
 	oReq.open("POST", "/favorites");
 	oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	oReq.send(`placeID=${id}`);
+	oReq.send(`placeID=${id}&placeName=${name}`);
 
 	var oReq = new XMLHttpRequest();
 	oReq.open("POST", "/popular");
 	oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	oReq.send(`placeID=${id}`);
+	oReq.send(`placeID=${id}&placeName=${name}`);
 }
 
 function displaySearchResults() {

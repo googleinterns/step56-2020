@@ -30,12 +30,12 @@ public final class Popular {
   Query query = new Query("Popular");
 
   // Store restaurant's popularity score (# times it has been 'favorited') in Datastore
-  public void addToPopularList(String placeID) {
+  public void addToPopularList(String placeID, String placeName) {
     // Load restaurants'popularity scores from Datastore to check if place already exists in popular list
     boolean alreadyExists = false;
     PreparedQuery results = datastore.prepare(query);
     for (Entity entity : results.asIterable()) {
-        String place = (String) entity.getProperty("place");
+        String place = (String) entity.getProperty("placeID");
         if (place.equals(placeID)) {
             alreadyExists = true;
             // Increment popularity score by 1
@@ -45,7 +45,8 @@ public final class Popular {
     }
     if (!alreadyExists) {
         Entity popularEntity = new Entity("Popular");
-        popularEntity.setProperty("place", placeID);
+        popularEntity.setProperty("placeID", placeID);
+        popularEntity.setProperty("placeName", placeName);
         popularEntity.setProperty("score", 1);   
         datastore.put(popularEntity);
     }
@@ -57,7 +58,7 @@ public final class Popular {
     // Load popular restaurants from Datastore
     PreparedQuery results = datastore.prepare(query);
     for (Entity entity : results.asIterable()) {
-        String place = (String) entity.getProperty("place");
+        String place = (String) entity.getProperty("placeName");
         int popularityScore = (int) entity.getProperty("score");
         popular.put(place, popularityScore);
     }

@@ -35,11 +35,12 @@ public class PopularServlet extends HttpServlet {
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Get the restaurant ID from the server
+    // Get the restaurant ID and name from the server
     String placeID = request.getParameter("placeID");
+    String placeName = request.getParameter("placeName");
 
     // Update restaurant's popularity ('favorited') score
-    popular.addToPopularList(placeID);
+    popular.addToPopularList(placeID, placeName);
 
     response.setContentType("text/html;");
     response.getWriter().println(popular.getPopular());
