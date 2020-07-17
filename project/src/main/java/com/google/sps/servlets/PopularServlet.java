@@ -24,33 +24,33 @@ import com.google.gson.Gson;
 
 @WebServlet("/popular")
 public class PopularServlet extends HttpServlet {
-  Popular popular = new Popular();
+    Popular popular = new Popular();
 
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {    
-    response.setContentType("application/json");
-    String json = new Gson().toJson(popular.getPopular());
-    response.getWriter().println(json);
-  }
-
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Get the restaurant ID and name from the server
-    String placeID = request.getParameter("placeID");
-    String placeName = request.getParameter("placeName");
-
-    // Update restaurant's popularity ('favorited') score
-    popular.addToPopularList(placeID, placeName);
-
-    response.setContentType("text/html;");
-    response.getWriter().println(popular.getPopular());
-  }
-
-  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
-    String value = request.getParameter(name);
-    if (value == null) {
-      return defaultValue;
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {    
+        response.setContentType("application/json");
+        String json = new Gson().toJson(popular.getPopular());
+        response.getWriter().println(json);
     }
-    return value;
-  }
+
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // Get the restaurant ID and name from the server
+        String placeID = request.getParameter("placeID");
+        String placeName = request.getParameter("placeName");
+
+        // Update restaurant's popularity ('favorited') score
+        popular.addToPopularList(placeID, placeName);
+
+        response.setContentType("text/html;");
+        response.getWriter().println(popular.getPopular());
+    }
+
+    private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+        String value = request.getParameter(name);
+        if (value == null) {
+            return defaultValue;
+        }
+        return value;
+    }
 }

@@ -26,25 +26,23 @@ import com.google.gson.Gson;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("text/html");
+        Login login_info = new Login();
+        UserService userService = UserServiceFactory.getUserService();
+        Gson gson = new Gson();
+        String user = "Guest";
+        String url = userService.createLoginURL("/");
 
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html");
-    Login login_info = new Login();
-    UserService userService = UserServiceFactory.getUserService();
-    Gson gson = new Gson();
-    String user = "Guest";
-    String url = userService.createLoginURL("/");
-
-    if (userService.isUserLoggedIn()) {
-      user = userService.getCurrentUser().getEmail();
-      url = userService.createLogoutURL("/");
-    } 
-    
-    login_info.addToLoginList(user);
-    login_info.addToLoginList(url);
-    response.setContentType("application/json");
-    String json = gson.toJson(login_info);
-    response.getWriter().println(json);
-  }
+        if (userService.isUserLoggedIn()) {
+            user = userService.getCurrentUser().getEmail();
+            url = userService.createLogoutURL("/");
+        } 
+        login_info.addToLoginList(user);
+        login_info.addToLoginList(url);
+        response.setContentType("application/json");
+        String json = gson.toJson(login_info);
+        response.getWriter().println(json);
+    }
 }

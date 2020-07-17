@@ -24,34 +24,33 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 
 /** Class containing user search history. */
 public final class Search {
-  private String userEmail = "";
+    private String userEmail = "";
 
-  DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  Query query = new Query("Search");
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Query query = new Query("Search");
 
-  public void addToSearchList(String user, String search) {
-    userEmail = user; 
-    // Store search in Datastore
-    Entity searchEntity = new Entity("Search");
-    searchEntity.setProperty("user", user);
-    searchEntity.setProperty("search", search);   
-    datastore.put(searchEntity);
-  }
-
-  public List<String> getSearches() {
-    List<String> searches = new ArrayList<>();
-    // Load user's searches from Datastore
-    PreparedQuery results = datastore.prepare(query);
-    for (Entity entity : results.asIterable()) {
-      String user = (String) entity.getProperty("user");
-      if (user.equals(userEmail)) {
-        String search = (String) entity.getProperty("search");
-        if (!searches.contains(search)) {
-            searches.add(search);
-        }
-      }
+    public void addToSearchList(String user, String search) {
+        userEmail = user; 
+        // Store search in Datastore
+        Entity searchEntity = new Entity("Search");
+        searchEntity.setProperty("user", user);
+        searchEntity.setProperty("search", search);   
+        datastore.put(searchEntity);
     }
-    return searches;
-  }
 
+    public List<String> getSearches() {
+        List<String> searches = new ArrayList<>();
+        // Load user's searches from Datastore
+        PreparedQuery results = datastore.prepare(query);
+        for (Entity entity : results.asIterable()) {
+            String user = (String) entity.getProperty("user");
+            if (user.equals(userEmail)) {
+                String search = (String) entity.getProperty("search");
+                if (!searches.contains(search)) {
+                    searches.add(search);
+                }
+            }
+        }
+        return searches;
+    }
 }

@@ -24,35 +24,34 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 
 /** Class containing users' favorite restaurants. */
 public final class Favorites {
-  private String userEmail = "";
+    private String userEmail = "";
 
-  DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  Query query = new Query("Favorites");
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Query query = new Query("Favorites");
 
-  public void addToFavoritesList(String user, String placeID, String placeName) {
-    userEmail = user; 
-    // Store favorite restaurant in Datastore
-    Entity favoriteEntity = new Entity("Favorites");
-    favoriteEntity.setProperty("user", user);
-    favoriteEntity.setProperty("favoriteID", placeID); 
-    favoriteEntity.setProperty("favoriteName", placeName);     
-    datastore.put(favoriteEntity);
-  }
-
-  public List<String> getFavorites() {
-    List<String> favorites = new ArrayList<>();
-    // Load user's favorites from Datastore
-    PreparedQuery results = datastore.prepare(query);
-    for (Entity entity : results.asIterable()) {
-      String user = (String) entity.getProperty("user");
-      if (user.equals(userEmail)) {
-        String fav = (String) entity.getProperty("favoriteName");
-        if (!favorites.contains(fav)) {
-            favorites.add(fav);
-        }
-      }
+    public void addToFavoritesList(String user, String placeID, String placeName) {
+        userEmail = user; 
+        // Store favorite restaurant in Datastore
+        Entity favoriteEntity = new Entity("Favorites");
+        favoriteEntity.setProperty("user", user);
+        favoriteEntity.setProperty("favoriteID", placeID); 
+        favoriteEntity.setProperty("favoriteName", placeName);     
+        datastore.put(favoriteEntity);
     }
-    return favorites;
-  }
 
+    public List<String> getFavorites() {
+        List<String> favorites = new ArrayList<>();
+        // Load user's favorites from Datastore
+        PreparedQuery results = datastore.prepare(query);
+        for (Entity entity : results.asIterable()) {
+            String user = (String) entity.getProperty("user");
+            if (user.equals(userEmail)) {
+                String fav = (String) entity.getProperty("favoriteName");
+                if (!favorites.contains(fav)) {
+                    favorites.add(fav);
+                }
+            }
+        }
+        return favorites;
+    }
 }

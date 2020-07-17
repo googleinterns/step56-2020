@@ -30,37 +30,37 @@ import com.google.appengine.api.users.UserServiceFactory;
 /** Servlet that handles search data */
 @WebServlet("/search")
 public class SearchServlet extends HttpServlet {
-  Search searches = new Search();
-  UserService userService = UserServiceFactory.getUserService();
+    Search searches = new Search();
+    UserService userService = UserServiceFactory.getUserService();
 
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("application/json");
-    String json = new Gson().toJson(searches.getSearches());
-    response.getWriter().println(json);
-  }
-
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Get the search input from the form
-    String search = getParameter(request, "search-input", "");
-    response.setContentType("text/html;");
-
-    // Get current user's email address
-    String user = userService.getCurrentUser().getEmail();
-
-    // Store user's new search
-    searches.addToSearchList(user, search);
-    response.getWriter().println(searches.getSearches());
-  }
-
-  private String getParameter(HttpServletRequest request, String name, String defaultValue) {
-    String value = request.getParameter(name);
-    if (value == null) {
-      return defaultValue;
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType("application/json");
+        String json = new Gson().toJson(searches.getSearches());
+        response.getWriter().println(json);
     }
-    return value;
-  }
+
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        // Get the search input from the form
+        String search = getParameter(request, "search-input", "");
+        response.setContentType("text/html;");
+
+        // Get current user's email address
+        String user = userService.getCurrentUser().getEmail();
+
+        // Store user's new search
+        searches.addToSearchList(user, search);
+        response.getWriter().println(searches.getSearches());
+    }
+
+    private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+        String value = request.getParameter(name);
+        if (value == null) {
+            return defaultValue;
+        }
+        return value;
+    }
 }
 
 
