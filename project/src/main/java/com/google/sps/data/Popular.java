@@ -41,6 +41,7 @@ public final class Popular {
             // Increment popularity score by 1
             int curPopularity = (int) entity.getProperty("score");
             entity.setProperty("score", curPopularity + 1); 
+            break;
         }
     }
     if (!alreadyExists) {
