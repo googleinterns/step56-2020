@@ -127,6 +127,11 @@ function radiusChange(sel) {
 	displaySearch(searchQuery, currentRadius, numberOfPlaces);
 }
 
+function typeChange(sel) {
+	clearMarkers();
+	displaySearch(sel.value, currentRadius, numberOfPlaces);
+}
+
 initMap();
 
 //Every 30 seconds, if the new location is unitDistance away from the previous location the map reloads, distance measured in taxicab metric

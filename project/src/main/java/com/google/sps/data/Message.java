@@ -26,4 +26,15 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 
 /** Class containing restaurants' popularity scores (# of times 'favorited'). */
 public final class Message {
+	private final String writer;
+	private final String recipient;
+	private final String message;
+	private final Long timestamp;
+
+	public Message (String writer, String recipient, String message, Long timestamp) {
+		this.writer = writer;
+		this.recipient = recipient;
+		this.message = message;
+		this.timestamp = timestamp;
+	}
 }

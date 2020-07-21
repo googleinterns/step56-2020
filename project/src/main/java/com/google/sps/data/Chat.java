@@ -13,10 +13,13 @@
 // limitations under the License.
 
 package com.google.sps.data;
+import com.google.sps.data.Popular;
 import java.util.ArrayList;
 import java.util.List;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
@@ -44,12 +47,10 @@ public final class Chat {
 			String writer = (String) entity.getProperty("writer");
 			String recipient = (String) entity.getProperty("recipient");
 			if ((userA.equals(writer) && userB.equals(recipient)) || (userB.equals(writer) && userA.equals(recipient))) {
-				if (!favorites.contains(fav)) {
-					favorites.add(new Message(writer, recipient, (String) entity.getProperty("message"), (Long) entity.getProperty("timestamp")));
-				}
+				messages.add(new Message(writer, recipient, (String) entity.getProperty("message"), (Long) entity.getProperty("timestamp")));
 			}
 		}
-		return favorites;
+		return messages;
 	}
 
 }
