@@ -38,7 +38,7 @@ public final class Chat {
 		datastore.put(messageEntity);
 	}
 
-	public List<String> getMessageChain(String userA, String userB) {
+	public List<Message> getMessageChain(String userA, String userB) {
 		List<Message> messages = new ArrayList<>();
 		Query query = new Query("Message").addSort("timestamp", Query.SortDirection.DESCENDING);
 		// Load user's favorites from Datastore
