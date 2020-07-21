@@ -57,6 +57,15 @@ function createHistoryElement(search) {
   return searchElement;
 }
 
+// Adds the selected restaurant to favorites
+function addFavorite(placeID) {
+	var oReq = new XMLHttpRequest();
+        oReq.open("POST", "/favorites");
+        oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        oReq.send(`placeID=${placeID}`);
+}
+
+
 // Display user's favorite restaurants in "Favorites" bar
 function displayFavorites() {
     fetch('/favorites').then(response => response.json()).then((favorites) => {
@@ -96,13 +105,14 @@ window.onclick = function(event) {
 
 // Go to restaurant page
 function visitPage() {
-    window.location.replace(placeID); 
+    const shareableURL = window.location.href+"?placeID=<placeID>";
+    window.location.replace(shareableURL); 
 }
 
 // Constructs a shortened URL that leads to the chosen restaurant
 function shareableURL() {
     //const currentURL = window.location.href;
-    const shareableURL = window.location+"?placeID=<placeID>";
+    const shareableURL = window.location.href+"?placeID=<placeID>";
     alert("Shareable link: " + shareableURL);
 }
 
@@ -146,4 +156,10 @@ function createPopularElement(restaurant, score) {
   popElement.innerText = restaurant + "; Favorited by " + score + " users";
   popElement.addEventListener("click", openModal(), false);
   return popElement;
+}
+// Displays store if placeID is present in url
+
+params = new Map(window.location.search.slice(1,Infinity).split("&").map(x => x.split("=")));
+if (params.has("placeID") && map.get("placeID") != undefined) {
+	showCatalogue(params.get("placeID"));
 }
