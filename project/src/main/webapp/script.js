@@ -35,6 +35,7 @@ function fetchLoginStatus () {
         } else {
             loginContainer.innerHTML = '<a href="' + link + '">Login here</a>';
         }
+        //start();
     });
 }
 
@@ -132,21 +133,29 @@ function filterChoices() {
 function displayPopular() {
     fetch('/popular').then(response => response.json()).then((popular) => {
         const popularList = document.getElementById('popular-list');
-        
+        popularList.innerHTML = "";
+
         console.log("popular hashmap: " + popular);
         // Get list of restaurants with the 5 highest popularity scores
         var popScores = [];
         for (const key in popular) {
             popScores.push(popular[key]);
         }
-        var max = 5;
+        console.log("popular scores: " + popScores);
+        var maxLength = 5;
         if (popScores.length < 5) {
-            max = popScores.length;
+            maxLength = popScores.length;
         } 
-        for (var i = 0; i < max; i++) {
-            const highestScore = Math.max(popScores);
-            popScores.remove(highestScore);
-            const restaurantName = popular.getKey(highestScore);
+        for (var i = 0; i < maxLength; i++) {
+            const highestScore = Math.max.apply(Math, popScores);
+            const index = popScores.indexOf(highestScore);
+            console.log("highest score: " + highestScore);
+            console.log("index:" + index);
+            if (index > -1) {
+                popScores.splice(index, 1);
+            }
+            const restaurantName = Object.keys(popular).find(k=>popular[k]===highestScore);
+            console.log(restaurantName);
             popularList.appendChild(createPopularElement(restaurantName, highestScore));
         }
     });
@@ -155,8 +164,10 @@ function displayPopular() {
 // Creates a Popular List element
 function createPopularElement(restaurant, score) {
     const popElement = document.createElement('a');
+    const br = document.createElement('br');
     popElement.innerText = restaurant + "; Favorited by " + score + " users";
-    popElement.addEventListener("click", openModal(), false);
+    popElement.appendChild(br);
+    //popElement.addEventListener("click", openModal(), false);
     return popElement;
 }
 

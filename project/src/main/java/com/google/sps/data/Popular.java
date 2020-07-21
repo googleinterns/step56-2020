@@ -36,11 +36,15 @@ public final class Popular {
         PreparedQuery results = datastore.prepare(query);
         for (Entity entity : results.asIterable()) {
             String place = (String) entity.getProperty("placeID");
+            System.out.println("HERE1: " + place);
+            System.out.println("HERE2: " + placeID);
             if (place.equals(placeID)) {
+                System.out.println("already exists :" + placeName);
                 alreadyExists = true;
                 // Increment popularity score by 1
                 long curPopularity = (long) entity.getProperty("score");
                 entity.setProperty("score", curPopularity + 1); 
+                datastore.put(entity);
                 break;
             }
         }

@@ -115,6 +115,7 @@ function addServerInfo(id, name) {
 	oReq.send(`placeID=${id}&placeName=${name}`);
     
     displayFavorites();
+    displayPopular();
 }
 
 function displaySearchResults() {
