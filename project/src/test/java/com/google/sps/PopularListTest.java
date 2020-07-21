@@ -30,7 +30,17 @@ import org.junit.runners.JUnit4;
 /*
 @RunWith(JUnit4.class)
 public final class PopularListTest {
-    
+    Popular popular = new Popular();
+
+    @Test
+    public void addNewPlaceToPopularList() {
+        MeetingRequest request = new MeetingRequest(NO_ATTENDEES, DURATION_1_HOUR);
+
+        Collection<TimeRange> actual = query.query(NO_EVENTS, request);
+        Collection<TimeRange> expected = Arrays.asList(TimeRange.WHOLE_DAY);
+
+        Assert.assertEquals(expected, actual);
+    }
 
 
     

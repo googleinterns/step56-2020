@@ -39,7 +39,7 @@ public final class Popular {
             if (place.equals(placeID)) {
                 alreadyExists = true;
                 // Increment popularity score by 1
-                int curPopularity = (int) entity.getProperty("score");
+                long curPopularity = (long) entity.getProperty("score");
                 entity.setProperty("score", curPopularity + 1); 
                 break;
             }
@@ -54,13 +54,13 @@ public final class Popular {
   }
 
     // Returns a list of all popular restaurants and their popularity scores
-    public Map<String, Integer> getPopular() {
-        Map<String, Integer> popular = new HashMap<>();
+    public Map<String, Long> getPopular() {
+        Map<String, Long> popular = new HashMap<>();
         // Load popular restaurants from Datastore
         PreparedQuery results = datastore.prepare(query);
         for (Entity entity : results.asIterable()) {
             String place = (String) entity.getProperty("placeName");
-            int popularityScore = (int) entity.getProperty("score");
+            long popularityScore = (long) entity.getProperty("score");
             popular.put(place, popularityScore);
         }
         return popular;

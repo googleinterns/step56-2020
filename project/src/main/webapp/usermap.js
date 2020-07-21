@@ -113,6 +113,8 @@ function addServerInfo(id, name) {
 	oReq.open("POST", "/popular");
 	oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	oReq.send(`placeID=${id}&placeName=${name}`);
+    
+    displayFavorites();
 }
 
 function displaySearchResults() {

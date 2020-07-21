@@ -69,7 +69,9 @@ function addFavorite(placeID) {
 // Display user's favorite restaurants in "Favorites" bar
 function displayFavorites() {
     fetch('/favorites').then(response => response.json()).then((favorites) => {
+        console.log("favorites: " + favorites);
         const favoritesBar = document.getElementById('favorites-bar');
+        favoritesBar.innerHTML = "";
         for (const fav in favorites) {
             favoritesBar.appendChild(createFavoritesElement(favorites[fav]));
         }
@@ -79,9 +81,11 @@ function displayFavorites() {
 // Creates a favorites bar element
 function createFavoritesElement(favorite) {
     placeID = favorite;
+    const br = document.createElement('br');
     const favElement = document.createElement('a');
     favElement.innerText = favorite;
-    favElement.addEventListener("click", openModal(), false);
+    favElement.appendChild(br);
+    //favElement.addEventListener("click", openModal(), false);
     return favElement;
 }
 
@@ -131,8 +135,11 @@ function displayPopular() {
         
         console.log("popular hashmap: " + popular);
         // Get list of restaurants with the 5 highest popularity scores
-        var popScores = popular.values();
-        const max = 5;
+        var popScores = [];
+        for (const key in popular) {
+            popScores.push(popular[key]);
+        }
+        var max = 5;
         if (popScores.length < 5) {
             max = popScores.length;
         } 
