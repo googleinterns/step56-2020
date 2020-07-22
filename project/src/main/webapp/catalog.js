@@ -10,11 +10,9 @@ function showCatalog(placeID) {
             placeId: placeID,
             fields: ["photos", "rating", "reviews"]
         };
-	console.log("Yep");
 
         service = new google.maps.places.PlacesService(map);
         service.getDetails(request, function callback(results, status) { // this request will return an array of photos as a result
-	console.log("Yep");
             if (status == google.maps.places.PlacesServiceStatus.OK) {
                 photos = results.photos;
                 reviews = results.reviews;
@@ -39,7 +37,6 @@ function showCatalog(placeID) {
                 var rating = document.getElementById("rating").innerText = results.rating + "/5";
                 reviewSpace = document.getElementById("reviews").innerText =  reviewArr[0];
             } else {
-		    console.log("why", status);
 	    }
         });
     };
