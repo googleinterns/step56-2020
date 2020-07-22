@@ -21,11 +21,13 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 
 /** Class containing user search history. */
 public final class Search {
     private String userEmail = "";
-
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Query query = new Query("Search");
 
@@ -41,14 +43,13 @@ public final class Search {
     public List<String> getSearches() {
         List<String> searches = new ArrayList<>();
         // Load user's searches from Datastore
-        PreparedQuery results = datastore.prepare(query);
+        Filter propertyFilter = new FilterPredicate("user", FilterOperator.EQUAL, userEmail);
+        Query q = new Query("Search").setFilter(propertyFilter);
+        PreparedQuery results = datastore.prepare(q);
         for (Entity entity : results.asIterable()) {
-            String user = (String) entity.getProperty("user");
-            if (user.equals(userEmail)) {
-                String search = (String) entity.getProperty("search");
-                if (!searches.contains(search)) {
-                    searches.add(search);
-                }
+            String search = (String) entity.getProperty("search");
+            if (!searches.contains(search)) {
+                searches.add(search);
             }
         }
         return searches;

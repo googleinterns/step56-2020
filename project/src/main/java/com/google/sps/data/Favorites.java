@@ -21,6 +21,9 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 
 /** Class containing users' favorite restaurants. */
 public final class Favorites {
@@ -42,14 +45,13 @@ public final class Favorites {
     public List<String> getFavorites() {
         List<String> favorites = new ArrayList<>();
         // Load user's favorites from Datastore
-        PreparedQuery results = datastore.prepare(query);
+        Filter propertyFilter = new FilterPredicate("user", FilterOperator.EQUAL, userEmail);
+        Query q = new Query("Favorites").setFilter(propertyFilter);
+        PreparedQuery results = datastore.prepare(q);
         for (Entity entity : results.asIterable()) {
-            String user = (String) entity.getProperty("user");
-            if (user.equals(userEmail)) {
-                String fav = (String) entity.getProperty("favoriteName");
-                if (!favorites.contains(fav)) {
-                    favorites.add(fav);
-                }
+            String fav = (String) entity.getProperty("favoriteName");
+            if (!favorites.contains(fav)) {
+                favorites.add(fav);
             }
         }
         return favorites;
