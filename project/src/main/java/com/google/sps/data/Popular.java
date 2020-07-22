@@ -23,6 +23,9 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 
 /** Class containing restaurants' popularity scores (# of times 'favorited'). */
 public final class Popular {
@@ -33,21 +36,18 @@ public final class Popular {
     public void addToPopularList(String placeID, String placeName) {
         // Load restaurants'popularity scores from Datastore to check if place already exists in popular list
         boolean alreadyExists = false;
-        PreparedQuery results = datastore.prepare(query);
+        Filter propertyFilter = new FilterPredicate("placeID", FilterOperator.EQUAL, placeID);
+        Query q = new Query("Popular").setFilter(propertyFilter);
+        PreparedQuery results = datastore.prepare(q);
         for (Entity entity : results.asIterable()) {
-            String place = (String) entity.getProperty("placeID");
-            System.out.println("HERE1: " + place);
-            System.out.println("HERE2: " + placeID);
-            if (place.equals(placeID)) {
-                System.out.println("already exists :" + placeName);
-                alreadyExists = true;
-                // Increment popularity score by 1
-                long curPopularity = (long) entity.getProperty("score");
-                entity.setProperty("score", curPopularity + 1); 
-                datastore.put(entity);
-                break;
-            }
+            alreadyExists = true;
+            // Increment popularity score by 1
+            long curPopularity = (long) entity.getProperty("score");
+            entity.setProperty("score", curPopularity + 1); 
+            datastore.put(entity);
+            break;
         }
+
         if (!alreadyExists) {
             Entity popularEntity = new Entity("Popular");
             popularEntity.setProperty("placeID", placeID);

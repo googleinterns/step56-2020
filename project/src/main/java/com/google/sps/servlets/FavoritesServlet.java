@@ -46,6 +46,8 @@ public class FavoritesServlet extends HttpServlet {
         String placeID = request.getParameter("placeID");
         String placeName = request.getParameter("placeName");
 
+        System.out.println("username: " + user + ", place: " + placeName);
+
         // Store user's favorited restaurant
         favorites.addToFavoritesList(user, placeID, placeName);
     }
