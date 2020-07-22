@@ -1,17 +1,14 @@
 var photoURLS; 
 var image;
-
-function execute() {
-    initMap();
-    search();
-    getCatalog();
-}
+var reviewsArr;
+var reviewSpace;
 
 function showCatalog(placeID) {
+    console.log ("this is the catalog")
     //returns photos associated with user search
         const request = {
             placeId: placeID,
-            fields: ["photos"]
+            fields: ["photos", "rating", "reviews"]
         };
 	console.log("Yep");
 
@@ -20,20 +17,27 @@ function showCatalog(placeID) {
 	console.log("Yep");
             if (status == google.maps.places.PlacesServiceStatus.OK) {
                 photos = results.photos;
+                reviews = results.reviews;
                 if (!photos) {
                     console.log("No Photos");
                     return;
                 }
 
                 photoURLS = [];
+                reviewsArr = [];
                 console.log(photoURLS);
                 for (var i = 0; i < photos.length; i++){
                     var url = photos[i].getUrl({maxWidth: 500, maxHeight: 500})
                     photoURLS.push(url);
+                    if (i < 5) { // details request only returns up to 5 reviewa
+                        reviewsArr.push(reviews[i]);
+                    }
                     console.log("added new url: ", url);
                 }
                 image = document.getElementById("image");
                 image.src = photoURLS[0];
+                var rating = document.getElementById("rating").innerText = results.rating + "/5";
+                reviewSpace = document.getElementById("reviews").innerText =  reviewArr[0];
             } else {
 		    console.log("why", status);
 	    }

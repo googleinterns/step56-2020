@@ -33,7 +33,7 @@ function resetMap(center, query, zoom, radius, numberOfPlaces) {
 
 function displaySearch(query, radius, displayNumber) {
 	placesPromise = getSearchedPlaces(map, radius, query);
-	placesPromise.then((li) => li.slice(0, displayNumber).forEach((x) => markerList.push(addMarker(map, x.geometry.location, x.name, x.icon, x.id))));
+	placesPromise.then((li) => li.slice(0, displayNumber).forEach((x) => markerList.push(addMarker(map, x.geometry.location, x.name, x.icon, x.place_id))));
 }
 
 function clearMarkers() {
@@ -136,4 +136,3 @@ setInterval(async function(){
 		resetMap(newCurrentLocation, searchQuery, currentZoom, currentRadius, numberOfPlaces);
 	}
 }, 1 * 30 * 1000);
-
