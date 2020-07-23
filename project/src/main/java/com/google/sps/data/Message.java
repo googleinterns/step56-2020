@@ -25,16 +25,37 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 
 /** Class containing restaurants' popularity scores (# of times 'favorited'). */
-public final class Message {
+public final class Message{
 	private final String writer;
 	private final String recipient;
 	private final String message;
-	private final Long timestamp;
+	private final long timestamp;
+	private Entity entity = new Entity("Message");
 
 	public Message (String writer, String recipient, String message, Long timestamp) {
 		this.writer = writer;
+		entity.setProperty("writer", writer);
 		this.recipient = recipient;
+		entity.setProperty("recipient", recipient);
 		this.message = message;
+		entity.setProperty("message", message);
 		this.timestamp = timestamp;
+		entity.setProperty("timestamp", timestamp);
+	}
+
+	public Entity getEntity() {
+		return entity;
+	}
+
+	public String getWriter() {
+		return writer;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public long getTimestamp() {
+		return timestamp;
 	}
 }

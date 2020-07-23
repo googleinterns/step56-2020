@@ -13,16 +13,22 @@
 // limitations under the License.
 
 package com.google.sps.data;
-import com.google.sps.data.Popular;
+import com.google.sps.data.Message;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
+import com.google.appengine.api.datastore.Query.CompositeFilter;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
 import com.google.appengine.api.datastore.Query.SortDirection;
 
 /** Class containing Chat between users */
@@ -30,25 +36,39 @@ public final class Chat {
 	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
 	public void addMessage(String writer, String recipient, String message, long timestamp) {
-		Entity messageEntity = new Entity("Message");
-		messageEntity.setProperty("writer", writer);
-		messageEntity.setProperty("recipient", recipient);   
-		messageEntity.setProperty("message", message);   
-		messageEntity.setProperty("timestamp", timestamp);   
-		datastore.put(messageEntity);
+		Message tmessage = new Message(writer, recipient, message, timestamp);
+		datastore.put(tmessage.getEntity());
 	}
 
 	public List<Message> getMessageChain(String userA, String userB) {
+		Query query;
+		PreparedQuery results;
 		List<Message> messages = new ArrayList<>();
-		Query query = new Query("Message").addSort("timestamp", Query.SortDirection.DESCENDING);
-		// Load user's favorites from Datastore
-		PreparedQuery results = datastore.prepare(query);
+        	Filter writerAFilter = new CompositeFilter(CompositeFilterOperator.AND, Arrays.asList(
+				new FilterPredicate("writer", FilterOperator.EQUAL, userA), 
+				new FilterPredicate("recipient", FilterOperator.EQUAL, userB)
+				)
+			);
+        	Filter writerBFilter = new CompositeFilter(CompositeFilterOperator.AND, Arrays.asList(
+				new FilterPredicate("writer", FilterOperator.EQUAL, userB), 
+				new FilterPredicate("recipient", FilterOperator.EQUAL, userA)
+				)
+			);
+
+		query = new Query("Message")
+			.setFilter(writerAFilter)
+			.addSort("timestamp", SortDirection.DESCENDING);
+		results = datastore.prepare(query);
 		for (Entity entity : results.asIterable()) {
-			String writer = (String) entity.getProperty("writer");
-			String recipient = (String) entity.getProperty("recipient");
-			if ((userA.equals(writer) && userB.equals(recipient)) || (userB.equals(writer) && userA.equals(recipient))) {
-				messages.add(new Message(writer, recipient, (String) entity.getProperty("message"), (Long) entity.getProperty("timestamp")));
-			}
+			messages.add(new Message(userA, userB, (String) entity.getProperty("message"), (Long) entity.getProperty("timestamp")));
+		}
+
+		query = new Query("Message")
+			.setFilter(writerBFilter)
+			.addSort("timestamp", SortDirection.DESCENDING);
+		results = datastore.prepare(query);
+		for (Entity entity : results.asIterable()) {
+			messages.add(new Message(userB, userA, (String) entity.getProperty("message"), (Long) entity.getProperty("timestamp")));
 		}
 		return messages;
 	}
