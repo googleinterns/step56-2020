@@ -38,9 +38,14 @@ public class PopularServlet extends HttpServlet {
         // Get the restaurant ID and name from the server
         String placeID = request.getParameter("placeID");
         String placeName = request.getParameter("placeName");
+        String addToList = request.getParameter("addOrRemove");
 
         // Update restaurant's popularity ('favorited') score
-        popular.addToPopularList(placeID, placeName);
+        if (addToList.equals("add")) {
+            popular.addToPopularList(placeID, placeName);
+        } else {
+            popular.removeFromPopularList(placeID, placeName);
+        }
 
         response.setContentType("text/html;");
         response.getWriter().println(popular.getPopular());
