@@ -40,7 +40,7 @@ public class ChatServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // Get the restaurant ID from the server
-    String writer = request.getParameter("writer");
+    String writer = userService.getCurrentUser().getEmail(); 
     String recipient = request.getParameter("recipient");
     String message = request.getParameter("message");
     Long timestamp = Long.parseLong(request.getParameter("timestamp"));

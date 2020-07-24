@@ -90,6 +90,15 @@
 	    <div id="map" style="height:400px;"></div>
             </div>
         </div>
+	<div id="chat-div">
+		<ul id="message-chain"></ul>
+		<br>
+		<br>
+		<textarea id="message" rows="4" cols="50"></textarea>
+		<br>
+		<br>
+		<button onClick="sendMessage()"></button>
+	</div>
     </div>
     <div style="text-align:center; background-color: rgb(205, 233, 247); padding: 100px; margin-top:45px">
         <p><h1>Objective</h1></p>
@@ -98,6 +107,7 @@
 	<script	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEVKOx6yO8pM10Jj39HXSkS4HYEv8nBJ8&libraries=places"></script>
 	<script src="catalog.js"></script>
 	<script src="usermap.js"></script>
+	<script src="message.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
