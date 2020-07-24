@@ -90,14 +90,15 @@
 	    <div id="map" style="height:400px;"></div>
             </div>
         </div>
-	<div id="chat-div">
+	<div id="chat-div" hidden>
 		<ul id="message-chain"></ul>
 		<br>
 		<br>
 		<textarea id="message" rows="4" cols="50"></textarea>
 		<br>
 		<br>
-		<button onClick="sendMessage()"></button>
+		<button type="button" onclick="sendMessage()">Send</button>
+	<script src="usermap.js"></script>
 	</div>
     </div>
     <div style="text-align:center; background-color: rgb(205, 233, 247); padding: 100px; margin-top:45px">

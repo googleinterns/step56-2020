@@ -57,7 +57,7 @@ public final class Chat {
 
 		query = new Query("Message")
 			.setFilter(writerAFilter)
-			.addSort("timestamp", SortDirection.DESCENDING);
+			.addSort("timestamp", SortDirection.ASCENDING);
 		results = datastore.prepare(query);
 		for (Entity entity : results.asIterable()) {
 			messages.add(new Message(userA, userB, (String) entity.getProperty("message"), (Long) entity.getProperty("timestamp")));
