@@ -28,8 +28,16 @@ import com.google.appengine.api.datastore.Query.FilterOperator;
 /** Class containing users' favorite restaurants. */
 public final class Favorites {
     private String userEmail = "";
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    DatastoreService datastore;
     Query query = new Query("Favorites");
+
+    public Favorites() {
+        datastore = DatastoreServiceFactory.getDatastoreService();
+    }
+
+    public Favorites(DatastoreService ds) {
+        datastore = ds;
+    }   
 
     public void addToFavoritesList(String user, String placeID, String placeName) {
         userEmail = user; 

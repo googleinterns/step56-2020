@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -35,34 +36,41 @@ import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 
+import static com.google.appengine.api.datastore.FetchOptions.Builder.withLimit;
+import static org.junit.Assert.assertEquals;
+import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
+
 /** Favorites Tests */
-/*
+
 @RunWith(JUnit4.class)
 
 public final class FavoritesTest {
-    Favorites favorites = new Favorites();
-    //DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    //Query query = new Query("Favorites");
+    Query query; 
 
     private static final String userEmail_1 = "srosset@google.com";
-
     private static final String placeID_1 = "1234";
-
     private static final String placeName_1 = "Azuma";
     
     //add favorites to database (expected) (addToFavoritesList)
     //call getFavorites() (actual)
 
+    private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+
     @Before
-    public void clearDatabase() {        
-        PreparedQuery results = datastore.prepare(query);
-        for (Entity entity : results.asIterable()) {
-            datastore.delete(entity.getKey());
-        }
+    public void setUp() {
+        helper.setUp();
+    }
+
+    @After
+    public void tearDown() {
+        helper.tearDown();
     }
 
     @Test
     public void addNewPlaceToFavorites() {
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        Favorites favorites = new Favorites(datastore);
         favorites.addToFavoritesList(userEmail_1, placeID_1, placeName_1);
         List<String> actual = favorites.getFavorites();
         List<String> expected = new ArrayList<>();
@@ -71,6 +79,7 @@ public final class FavoritesTest {
         Assert.assertEquals(expected, actual);
     }
     
+    
 } 
-*/
+
 
