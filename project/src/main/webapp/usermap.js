@@ -2,7 +2,6 @@
 // max distance
 // use maps, applys to make userMap
 
-
 var currentZoom = 12;
 var currentRadius = 5000;
 // Google Places api has a cap of 20 results
@@ -10,7 +9,7 @@ var numberOfPlaces = 20;
 var unitDistance = 1;
 var markerList = [];
 var searchQuery = "restaurant";
-var currentLocation, placesPromise;
+var currentLocation, placesPromise, currentStore;
 
 var infoWindow = new google.maps.InfoWindow;
 var map = new google.maps.Map(document.getElementById('map'), {
@@ -94,6 +93,9 @@ function addMarker(map, location, labelText, imageLink, id) {
 		map: map
 	});
 	marker.addListener("click", function() {
+		currentStore = id;
+		currentMessages = [];
+		displayMessageChain();
 		showCatalog(id);
 		var add = document.getElementById("add-favorite");
         add.hidden = false;
@@ -142,6 +144,11 @@ function radiusChange(sel) {
 	currentRadius = parseInt(sel.value);
 	clearMarkers();
 	displaySearch(searchQuery, currentRadius, numberOfPlaces);
+}
+
+function typeChange(sel) {
+	clearMarkers();
+	displaySearch(sel.value, currentRadius, numberOfPlaces);
 }
 
 initMap();
