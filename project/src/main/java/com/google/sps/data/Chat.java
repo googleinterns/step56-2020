@@ -50,6 +50,7 @@ public final class Chat {
 					new FilterPredicate("recipient", FilterOperator.EQUAL, recipient)
 					)
 				);
+	}
 
 		public static List<Message> getMessageChain(String userA, String userB, DatastoreService datastore) {
 			Query query;
