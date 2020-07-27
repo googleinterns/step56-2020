@@ -18,19 +18,19 @@ import java.util.List;
 
 /** Class containing login information. */
 public final class Login {
-  // List of login info (users's email, followed by login/logout link)
-  private final List<String> loginInfo = new ArrayList<>();
+    // List of login info (users's email, followed by login/logout link)
+    private final List<String> loginInfo = new ArrayList<>();
 
-  public void addToLoginList(String info) {
-      loginInfo.add(info);
-      System.out.println(loginInfo);
-  }
+    public void addToLoginList(String info) {
+        loginInfo.add(info);
+        System.out.println(loginInfo);
+    }
 
-  public List<String> getLoginInfo () {
-      return loginInfo;
-  }
+    public List<String> getLoginInfo () {
+        return loginInfo;
+    }
 
-  public String getEmail () {
-      return loginInfo.get(0);
-  }
+    public String getEmail () {
+        return loginInfo.get(0);
+    }
 }

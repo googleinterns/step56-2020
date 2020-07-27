@@ -26,23 +26,43 @@ import com.google.gson.Gson;
 
 @WebServlet("/favorites")
 public class FavoritesServlet extends HttpServlet {
-  Favorites favorites = new Favorites();
-  UserService userService = UserServiceFactory.getUserService();
+    Favorites favorites = new Favorites();
+    UserService userService = UserServiceFactory.getUserService();
 
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {    
-    // Get current user's email address
-    String user = userService.getCurrentUser().getEmail();
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {    
+        response.setContentType("application/json");
+        String json = new Gson().toJson(favorites.getFavorites());
+        System.out.println("favorites servlet: " + json);
+        response.getWriter().println(json);
+    }
 
-    // Get the restaurant ID from the server
-    String placeID = request.getParameter("placeID");
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {    
+        // Get current user's email address
+        String user = userService.getCurrentUser().getEmail();
 
-    // Store user's favorited restaurant
-    favorites.addToFavoritesList(user, placeID);
+        // Get the restaurant ID and name from the server
+        String placeID = request.getParameter("placeID");
+        String placeName = request.getParameter("placeName");
+        String addToList = request.getParameter("addOrRemove");
 
-    response.setContentType("application/json");
-    Gson gson = new Gson();
-    String json = gson.toJson(favorites.getFavorites());
-    response.getWriter().println(json);
-  }
+        if (addToList.equals("add")) {  
+            // Store user's favorited restaurant
+            favorites.addToFavoritesList(user, placeID, placeName);
+        } else {    // Remove from user's favorited list
+            favorites.removeFromFavoritesList(user, placeID, placeName);
+        }
+
+        response.setContentType("text/html;");
+        response.getWriter().println(favorites.getFavorites());
+    }
+
+    private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+        String value = request.getParameter(name);
+        if (value == null) {
+            return defaultValue;
+        }
+        return value;
+    }
 }
