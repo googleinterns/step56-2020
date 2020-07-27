@@ -23,7 +23,7 @@
                     <option value="50000">50 Km</option>
                 </select>
                 &nbsp;&nbsp; Type: &nbsp;
-                <select id="mySelectType">
+                <select id="mySelectType" onchange="typeChange(this)">
                     <option value="American">American</option>
                     <option value="Mexican">Mexican</option>
                     <option value="Indian">Indian</option>
@@ -84,6 +84,15 @@
                                 style="padding: 15px; background-color: #58add363; margin-left:5px;"
                                 onclick="next()">&#8250;
                     </a>
+                    <div id="rating" style="margin: 15px"></div>
+                    <div id="reviews">
+                        <div id="review-space"></div>
+                        <button id="review-button" onclick="showForm()">Write a Review</button>
+                            <form id="review-form" hidden>
+                                <textarea id="user-review" placeholder="write a review"></textarea><br/>
+                                <input type="submit" value="submit"/>
+                            </form>
+                    </div>
                 </div>
             </div>
 	    <button id="add-favorite" hidden></button>
