@@ -144,4 +144,3 @@ setInterval(async function(){
 		resetMap(newCurrentLocation, searchQuery, currentZoom, currentRadius, numberOfPlaces);
 	}
 }, 1 * 30 * 1000);
-
