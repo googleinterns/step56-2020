@@ -23,44 +23,59 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 
 /** Class containing restaurants' popularity scores (# of times 'favorited'). */
 public final class Popular {
-  DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  Query query = new Query("Popular");
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Query query = new Query("Popular");
 
-  // Store restaurant's popularity score (# times it has been 'favorited') in Datastore
-  public void addToPopularList(String placeID) {
-    // Load restaurants'popularity scores from Datastore to check if place already exists in popular list
-    boolean alreadyExists = false;
-    PreparedQuery results = datastore.prepare(query);
-    for (Entity entity : results.asIterable()) {
-        String place = (String) entity.getProperty("place");
-        if (place.equals(placeID)) {
-            alreadyExists = true;
+    // Store restaurant's popularity score (# times it has been 'favorited') in Datastore
+    public void addToPopularList(String placeID, String placeName) {
+        // Load restaurants'popularity scores from Datastore to check if place already exists in popular list
+        Filter propertyFilter = new FilterPredicate("placeID", FilterOperator.EQUAL, placeID);
+        Query q = new Query("Popular").setFilter(propertyFilter);
+        PreparedQuery results = datastore.prepare(q);
+        for (Entity entity : results.asIterable()) {
             // Increment popularity score by 1
-            int curPopularity = (int) entity.getProperty("score");
+            long curPopularity = (long) entity.getProperty("score");
             entity.setProperty("score", curPopularity + 1); 
+            datastore.put(entity);
+            return;
         }
-    }
-    if (!alreadyExists) {
+
         Entity popularEntity = new Entity("Popular");
-        popularEntity.setProperty("place", placeID);
+        popularEntity.setProperty("placeID", placeID);
+        popularEntity.setProperty("placeName", placeName);
         popularEntity.setProperty("score", 1);   
         datastore.put(popularEntity);
     }
-  }
 
-  // Returns a list of all popular restaurants and their popularity scores
-  public Map<String, Integer> getPopular() {
-    Map<String, Integer> popular = new HashMap<>();
-    // Load popular restaurants from Datastore
-    PreparedQuery results = datastore.prepare(query);
-    for (Entity entity : results.asIterable()) {
-        String place = (String) entity.getProperty("place");
-        int popularityScore = (int) entity.getProperty("score");
-        popular.put(place, popularityScore);
+    public void removeFromPopularList(String placeID, String placeName) {
+        Filter propertyFilter = new FilterPredicate("placeID", FilterOperator.EQUAL, placeID);
+        Query q = new Query("Popular").setFilter(propertyFilter);
+        PreparedQuery results = datastore.prepare(q);
+        for (Entity entity : results.asIterable()) {
+            // Decrement popularity score by 1
+            long curPopularity = (long) entity.getProperty("score");
+            entity.setProperty("score", curPopularity - 1); 
+            datastore.put(entity);
+            return;
+        }
     }
-    return popular;
-  }
+
+    // Returns a list of all popular restaurants and their popularity scores
+    public Map<String, Long> getPopular() {
+        Map<String, Long> popular = new HashMap<>();
+        // Load popular restaurants from Datastore
+        PreparedQuery results = datastore.prepare(query);
+        for (Entity entity : results.asIterable()) {
+            String place = (String) entity.getProperty("placeName");
+            long popularityScore = (long) entity.getProperty("score");
+            popular.put(place, popularityScore);
+        }
+        return popular;
+    }
 }

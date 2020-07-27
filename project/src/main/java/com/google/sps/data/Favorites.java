@@ -21,37 +21,56 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
+import com.google.appengine.api.datastore.Query.FilterOperator;
 
 /** Class containing users' favorite restaurants. */
 public final class Favorites {
-  private String userEmail = "";
+    private String userEmail = "";
+    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    Query query = new Query("Favorites");
 
-  DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-  Query query = new Query("Favorites");
-
-  public void addToFavoritesList(String user, String placeID) {
-    userEmail = user; 
-    // Store favorite restaurant in Datastore
-    Entity favoriteEntity = new Entity("Favorites");
-    favoriteEntity.setProperty("user", user);
-    favoriteEntity.setProperty("favorite", placeID);   
-    datastore.put(favoriteEntity);
-  }
-
-  public List<String> getFavorites() {
-    List<String> favorites = new ArrayList<>();
-    // Load user's favorites from Datastore
-    PreparedQuery results = datastore.prepare(query);
-    for (Entity entity : results.asIterable()) {
-      String user = (String) entity.getProperty("user");
-      if (user.equals(userEmail)) {
-        String fav = (String) entity.getProperty("favorite");
-        if (!favorites.contains(fav)) {
-            favorites.add(fav);
-        }
-      }
+    public void addToFavoritesList(String user, String placeID, String placeName) {
+        userEmail = user; 
+        // Store favorite restaurant in Datastore
+        Entity favoriteEntity = new Entity("Favorites");
+        favoriteEntity.setProperty("user", user);
+        favoriteEntity.setProperty("favoriteID", placeID); 
+        favoriteEntity.setProperty("favoriteName", placeName);     
+        datastore.put(favoriteEntity);
     }
-    return favorites;
-  }
 
+    
+    public void removeFromFavoritesList(String user, String placeID, String placeName) {
+        userEmail = user; 
+        // Remove favorite restaurant in Datastore
+        Filter propertyFilter = new FilterPredicate("user", FilterOperator.EQUAL, userEmail);
+        Query q = new Query("Favorites").setFilter(propertyFilter);
+        PreparedQuery results = datastore.prepare(q);
+        for (Entity entity : results.asIterable()) {
+            String fav = (String) entity.getProperty("favoriteName");
+            if (fav.equals(placeName)) {
+                //datastore.remove(entity);
+                datastore.delete(entity.getKey());
+            }
+            break;
+        }
+    }
+    
+
+    public List<String> getFavorites() {
+        List<String> favorites = new ArrayList<>();
+        // Load user's favorites from Datastore
+        Filter propertyFilter = new FilterPredicate("user", FilterOperator.EQUAL, userEmail);
+        Query q = new Query("Favorites").setFilter(propertyFilter);
+        PreparedQuery results = datastore.prepare(q);
+        for (Entity entity : results.asIterable()) {
+            String fav = (String) entity.getProperty("favoriteName");
+            if (!favorites.contains(fav)) {
+                favorites.add(fav);
+            }
+        }
+        return favorites;
+    }
 }

@@ -35,6 +35,7 @@ function fetchLoginStatus () {
         } else {
             loginContainer.innerHTML = '<a href="' + link + '">Login here</a>';
         }
+        //start();
     });
 }
 
@@ -42,34 +43,36 @@ fetchLoginStatus();
 
 // When "History" button is hovered over, display current user's search history
 function displaySearchHistory() {
-  fetch('/search').then(response => response.json()).then((searches) => {
-    const history = document.getElementById('history-content');
-    for (const search in searches) {
-        history.appendChild(createHistoryElement(searches[search]));
-    }
-  });
+    fetch('/search').then(response => response.json()).then((searches) => {
+        const history = document.getElementById('history-content');
+        for (const search in searches) {
+            history.appendChild(createHistoryElement(searches[search]));
+        }
+    });
 }
 
 // Creates a search history element
 function createHistoryElement(search) {
-  const searchElement = document.createElement('a');
-  searchElement.innerText = search;
-  return searchElement;
+    const searchElement = document.createElement('a');
+    searchElement.innerText = search;
+    return searchElement;
 }
 
 // Adds the selected restaurant to favorites
 function addFavorite(placeID) {
 	var oReq = new XMLHttpRequest();
-        oReq.open("POST", "/favorites");
-        oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        oReq.send(`placeID=${placeID}`);
+    oReq.open("POST", "/favorites");
+    oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    oReq.send(`placeID=${placeID}`);
 }
 
 
 // Display user's favorite restaurants in "Favorites" bar
 function displayFavorites() {
     fetch('/favorites').then(response => response.json()).then((favorites) => {
+        console.log("favorites: " + favorites);
         const favoritesBar = document.getElementById('favorites-bar');
+        favoritesBar.innerHTML = "";
         for (const fav in favorites) {
             favoritesBar.appendChild(createFavoritesElement(favorites[fav]));
         }
@@ -78,11 +81,13 @@ function displayFavorites() {
 
 // Creates a favorites bar element
 function createFavoritesElement(favorite) {
-  placeID = favorite;
-  const favElement = document.createElement('a');
-  favElement.innerText = favorite;
-  favElement.addEventListener("click", openModal(), false);
-  return favElement;
+    placeID = favorite;
+    const br = document.createElement('br');
+    const favElement = document.createElement('a');
+    favElement.innerText = favorite;
+    favElement.appendChild(br);
+    //favElement.addEventListener("click", openModal(), false);
+    return favElement;
 }
 
 // Modal opens displaying two options: go to restaurant page, or get shareable link
@@ -97,10 +102,10 @@ function closeModal () {
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-  var modal = document.getElementById("favoritesModal");
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
+    var modal = document.getElementById("favoritesModal");
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
 }
 
 // Go to restaurant page
@@ -119,32 +124,38 @@ function shareableURL() {
 // Called once user has selected their preferred filters and pressed the Search button
 // Stores filter choices
 function filterChoices() {
-    const radius = document.getElementById("mySelectRadius").selectedIndex;
-    const type = document.getElementById("mySelectType").selectedIndex + 4;
-    const price = document.getElementById("mySelectPrice").selectedIndex + 9;
-    console.log(document.getElementsByTagName("option")[radius].value);
-    console.log(document.getElementsByTagName("option")[type].value);
-    console.log(document.getElementsByTagName("option")[price].value);
+    const radius = document.querySelector('#mySelectRadius');
+    const type = document.querySelector('#mySelectType');
+    const price = document.querySelector('#mySelectPrice');
 }
 
 // Only display the top 5 most popular restaurants
 function displayPopular() {
     fetch('/popular').then(response => response.json()).then((popular) => {
         const popularList = document.getElementById('popular-list');
-        
+        popularList.innerHTML = "";
+
+        console.log("popular hashmap: " + popular);
         // Get list of restaurants with the 5 highest popularity scores
         var popScores = [];
-        for (const score in popular.values()) {
-            popScores.push(score);
+        for (const key in popular) {
+            popScores.push(popular[key]);
         }
-        const max = 5;
+        console.log("popular scores: " + popScores);
+        var maxLength = 5;
         if (popScores.length < 5) {
-            max = popScores.length;
+            maxLength = popScores.length;
         } 
-        for (var i = 0; i < max; i++) {
-            const highestScore = Math.max(popScores);
-            popScores.remove(highestScore);
-            const restaurantName = popular.getKey(highestScore);
+        for (var i = 0; i < maxLength; i++) {
+            const highestScore = Math.max.apply(Math, popScores);
+            const index = popScores.indexOf(highestScore);
+            console.log("highest score: " + highestScore);
+            console.log("index:" + index);
+            if (index > -1) {
+                popScores.splice(index, 1);
+            }
+            const restaurantName = Object.keys(popular).find(k=>popular[k]===highestScore);
+            console.log(restaurantName);
             popularList.appendChild(createPopularElement(restaurantName, highestScore));
         }
     });
@@ -152,13 +163,15 @@ function displayPopular() {
 
 // Creates a Popular List element
 function createPopularElement(restaurant, score) {
-  const popElement = document.createElement('a');
-  popElement.innerText = restaurant + "; Favorited by " + score + " users";
-  popElement.addEventListener("click", openModal(), false);
-  return popElement;
+    const popElement = document.createElement('a');
+    const br = document.createElement('br');
+    popElement.innerText = restaurant + "; Favorited by " + score + " users";
+    popElement.appendChild(br);
+    //popElement.addEventListener("click", openModal(), false);
+    return popElement;
 }
-// Displays store if placeID is present in url
 
+// Displays store if placeID is present in url
 params = new Map(window.location.search.slice(1,Infinity).split("&").map(x => x.split("=")));
 if (params.has("placeID") && map.get("placeID") != undefined) {
 	showCatalogue(params.get("placeID"));

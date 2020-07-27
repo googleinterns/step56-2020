@@ -97,25 +97,41 @@ function addMarker(map, location, labelText, imageLink, id) {
 		currentMessages = [];
 		displayMessageChain();
 		showCatalog(id);
-		var d = document.getElementById("add-favorite");
-		d.hidden = false;
-		d.innerText = "Add To Favorite";
-		d = document.getElementById("chat-div");
-		d.hidden = false;
+		var add = document.getElementById("add-favorite");
+        add.hidden = false;
+		add.innerText = "Add to Favorites";
+        var remove = document.getElementById("remove-favorite");
+        var addOrRemove = "add";
+        add.onclick = () => {
+            addServerInfo(id, labelText, addOrRemove);       
+            add.hidden = true;
+            remove.hidden = false;
+            remove.innerText = "Remove Favorite";
+        }
+        remove.onclick = () => {
+            addOrRemove = "remove";
+            addServerInfo(id, labelText, addOrRemove);      
+            remove.hidden = true;
+            add.hidden = false;
+            add.innerText = "Add to Favorite";
+        }
 	});
 	return marker;
 }
 
-function addServerInfo(id) {
+function addServerInfo(id, name, add) {
 	var oReq = new XMLHttpRequest();
 	oReq.open("POST", "/favorites");
 	oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	oReq.send(`placeID=${id}`);
+	oReq.send(`placeID=${id}&placeName=${name}&addOrRemove=${add}`);
 
 	var oReq = new XMLHttpRequest();
 	oReq.open("POST", "/popular");
 	oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	oReq.send(`placeID=${id}`);
+	oReq.send(`placeID=${id}&placeName=${name}&addOrRemove=${add}`);
+    
+    displayFavorites();
+    displayPopular();
 }
 
 function displaySearchResults() {
