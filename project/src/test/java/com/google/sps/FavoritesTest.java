@@ -55,9 +55,6 @@ public final class FavoritesTest {
     private static final String placeName_1 = "Azuma";
     private static final String placeName_2 = "Bistro 808";
     private static final String placeName_3 = "Chat 19";
-    
-    //add favorites to database (expected) (addToFavoritesList)
-    //call getFavorites() (actual)
 
     private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
@@ -158,8 +155,6 @@ public final class FavoritesTest {
 
         Assert.assertEquals(expected, actual);
     } 
-
-
 } 
 
 

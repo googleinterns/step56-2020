@@ -32,6 +32,14 @@ public final class Popular {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Query query = new Query("Popular");
 
+    public Popular() {
+        datastore = DatastoreServiceFactory.getDatastoreService();
+    }
+
+    public Popular(DatastoreService ds) {
+        datastore = ds;
+    }   
+
     // Store restaurant's popularity score (# times it has been 'favorited') in Datastore
     public void addToPopularList(String placeID, String placeName) {
         // Load restaurants'popularity scores from Datastore to check if place already exists in popular list

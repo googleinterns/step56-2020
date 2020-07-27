@@ -95,11 +95,15 @@ function addMarker(map, location, labelText, imageLink, id) {
 	});
 	marker.addListener("click", function() {
 		showCatalog(id);
-		var add = document.getElementById("add-favorite");
-        add.hidden = false;
-		add.innerText = "Add to Favorites";
+        var add = document.getElementById("add-favorite");
         var remove = document.getElementById("remove-favorite");
         var addOrRemove = "";
+        if (remove.hidden == false) {
+            remove.hidden = true;
+        } 
+        add.hidden = false;
+		add.innerText = "Add to Favorites";
+        
         add.onclick = () => {
             addOrRemove = "add";
             addServerInfo(id, labelText, addOrRemove);       
