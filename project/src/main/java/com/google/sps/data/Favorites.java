@@ -40,6 +40,7 @@ public final class Favorites {
     }   
 
     public void addToFavoritesList(String user, String placeID, String placeName) {
+        System.out.println("adding to fav list");
         userEmail = user; 
         // Store favorite restaurant in Datastore
         Entity favoriteEntity = new Entity("Favorites");
@@ -51,6 +52,7 @@ public final class Favorites {
 
     
     public void removeFromFavoritesList(String user, String placeID, String placeName) {
+        System.out.println("removing from fav list");
         userEmail = user; 
         // Remove favorite restaurant in Datastore
         Filter propertyFilter = new FilterPredicate("user", FilterOperator.EQUAL, userEmail);
@@ -65,7 +67,6 @@ public final class Favorites {
             break;
         }
     }
-    
 
     public List<String> getFavorites() {
         List<String> favorites = new ArrayList<>();
@@ -79,6 +80,7 @@ public final class Favorites {
                 favorites.add(fav);
             }
         }
+        System.out.println("getFavorites(): " + favorites);
         return favorites;
     }
 }

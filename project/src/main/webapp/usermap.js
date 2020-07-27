@@ -99,8 +99,9 @@ function addMarker(map, location, labelText, imageLink, id) {
         add.hidden = false;
 		add.innerText = "Add to Favorites";
         var remove = document.getElementById("remove-favorite");
-        var addOrRemove = "add";
+        var addOrRemove = "";
         add.onclick = () => {
+            addOrRemove = "add";
             addServerInfo(id, labelText, addOrRemove);       
             add.hidden = true;
             remove.hidden = false;
@@ -127,7 +128,7 @@ function addServerInfo(id, name, add) {
 	oReq.open("POST", "/popular");
 	oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 	oReq.send(`placeID=${id}&placeName=${name}&addOrRemove=${add}`);
-    
+
     displayFavorites();
     displayPopular();
 }

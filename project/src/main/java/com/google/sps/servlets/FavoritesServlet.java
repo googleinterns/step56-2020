@@ -32,8 +32,8 @@ public class FavoritesServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {    
         response.setContentType("application/json");
-        Gson gson = new Gson();
-        String json = gson.toJson(favorites.getFavorites());
+        String json = new Gson().toJson(favorites.getFavorites());
+        System.out.println("favorites servlet: " + json);
         response.getWriter().println(json);
     }
 
@@ -53,6 +53,9 @@ public class FavoritesServlet extends HttpServlet {
         } else {    // Remove from user's favorited list
             favorites.removeFromFavoritesList(user, placeID, placeName);
         }
+
+        response.setContentType("text/html;");
+        response.getWriter().println(favorites.getFavorites());
     }
 
     private String getParameter(HttpServletRequest request, String name, String defaultValue) {
