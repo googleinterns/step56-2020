@@ -60,7 +60,6 @@ public final class PopularTest {
     private static final Long score_2 = 2L;
     private static final Long score_3 = 3L;
 
-
     private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
     @Before
@@ -99,7 +98,6 @@ public final class PopularTest {
         expected.put(placeName_1, score_1);
         expected.put(placeName_2, score_1);
         expected.put(placeName_3, score_1);
-
 
         Assert.assertEquals(expected, actual);
     }
@@ -162,7 +160,6 @@ public final class PopularTest {
 
         Assert.assertEquals(expected, actual);
     } 
-
 
 }
 
