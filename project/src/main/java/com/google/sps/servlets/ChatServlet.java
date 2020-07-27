@@ -22,38 +22,40 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.gson.Gson;
 import com.google.sps.data.Chat;
 import com.google.sps.data.Message;
 
 @WebServlet("/chat")
 public class ChatServlet extends HttpServlet {
-  Chat chat = new Chat();
-  UserService userService = UserServiceFactory.getUserService();
+	UserService userService = UserServiceFactory.getUserService();
+	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {    
-    response.setContentType("application/json");
-    String writer = userService.getCurrentUser().getEmail(); 
-    String recipient = request.getParameter("recipient");
-    List<Message> chain = chat.getMessageChain(writer,recipient);
-    String json = new Gson().toJson(chain);
-    response.getWriter().println(json);
-  }
+	@Override
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {    
+		response.setContentType("application/json");
+		String writer = userService.getCurrentUser().getEmail(); 
+		String recipient = request.getParameter("recipient");
+		List<Message> chain = Chat.getMessageChain(writer, recipient, datastore);
+		String json = Chat.toJson(chain); 
+		response.getWriter().println(json);
+	}
 
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Get the restaurant ID from the server
-    String writer = userService.getCurrentUser().getEmail(); 
-    String recipient = request.getParameter("recipient");
-    String message = request.getParameter("message");
-    Long timestamp = Long.parseLong(request.getParameter("timestamp"));
+	@Override
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		// Get the restaurant ID from the server
+		String writer = userService.getCurrentUser().getEmail(); 
+		String recipient = request.getParameter("recipient");
+		String message = request.getParameter("message");
+		Long timestamp = Long.parseLong(request.getParameter("timestamp"));
 
-    chat.addMessage(writer, recipient, message, timestamp);
+		Chat.addMessage(writer, recipient, message, timestamp, datastore);
 
 
-    response.setContentType("text/html;");
-    response.getWriter().println("Success");
-  }
+		response.setContentType("text/html;");
+		response.getWriter().println("Success");
+	}
 
 }

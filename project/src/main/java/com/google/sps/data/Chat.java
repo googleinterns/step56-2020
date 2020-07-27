@@ -14,6 +14,7 @@
 
 package com.google.sps.data;
 import com.google.sps.data.Message;
+import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,44 +34,45 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 
 /** Class containing Chat between users */
 public final class Chat {
-	DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-	public void addMessage(String writer, String recipient, String message, long timestamp) {
+	public static void addMessage(String writer, String recipient, String message, long timestamp, DatastoreService datastore) {
 		Message tmessage = new Message(writer, recipient, message, timestamp);
 		datastore.put(tmessage.getEntity());
 	}
 
-	public List<Message> getMessageChain(String userA, String userB) {
-		Query query;
-		PreparedQuery results;
-		List<Message> messages = new ArrayList<>();
-        	Filter writerAFilter = new CompositeFilter(CompositeFilterOperator.AND, Arrays.asList(
-				new FilterPredicate("writer", FilterOperator.EQUAL, userA), 
-				new FilterPredicate("recipient", FilterOperator.EQUAL, userB)
-				)
-			);
-        	Filter writerBFilter = new CompositeFilter(CompositeFilterOperator.AND, Arrays.asList(
-				new FilterPredicate("writer", FilterOperator.EQUAL, userB), 
-				new FilterPredicate("recipient", FilterOperator.EQUAL, userA)
-				)
-			);
-
-		query = new Query("Message")
-			.setFilter(writerAFilter)
-			.addSort("timestamp", SortDirection.ASCENDING);
-		results = datastore.prepare(query);
-		for (Entity entity : results.asIterable()) {
-			messages.add(new Message(userA, userB, (String) entity.getProperty("message"), (Long) entity.getProperty("timestamp")));
-		}
-
-		query = new Query("Message")
-			.setFilter(writerBFilter)
-			.addSort("timestamp", SortDirection.DESCENDING);
-		results = datastore.prepare(query);
-		for (Entity entity : results.asIterable()) {
-			messages.add(new Message(userB, userA, (String) entity.getProperty("message"), (Long) entity.getProperty("timestamp")));
-		}
-		return messages;
+	public static String toJson(List<Message> chain){
+		return new Gson().toJson(chain);
 	}
 
-}
+	public static Filter createWriterRecipientFilter(String writer, String recipient) {
+		return new CompositeFilter(CompositeFilterOperator.AND, Arrays.asList(
+					new FilterPredicate("writer", FilterOperator.EQUAL, writer), 
+					new FilterPredicate("recipient", FilterOperator.EQUAL, recipient)
+					)
+				);
+
+		public static List<Message> getMessageChain(String userA, String userB, DatastoreService datastore) {
+			Query query;
+			PreparedQuery results;
+			List<Message> messages = new ArrayList<>();
+			Filter writerAFilter = createWriterRecipientFilter(userA, userB);
+			Filter writerBFilter = createWriterRecipientFilter(userB, userA); 
+			query = new Query("Message")
+				.setFilter(writerAFilter)
+				.addSort("timestamp", SortDirection.ASCENDING);
+			results = datastore.prepare(query);
+			for (Entity entity : results.asIterable()) {
+				messages.add(new Message(userA, userB, (String) entity.getProperty("message"), (Long) entity.getProperty("timestamp")));
+			}
+
+			query = new Query("Message")
+				.setFilter(writerBFilter)
+				.addSort("timestamp", SortDirection.DESCENDING);
+			results = datastore.prepare(query);
+			for (Entity entity : results.asIterable()) {
+				messages.add(new Message(userB, userA, (String) entity.getProperty("message"), (Long) entity.getProperty("timestamp")));
+			}
+			return messages;
+		}
+
+	}

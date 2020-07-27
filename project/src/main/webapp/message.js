@@ -16,8 +16,6 @@ function displayMessageChain() {
 				messageElement.innerText = msg.message + " from " + msg.writer;
 				messageChain.appendChild(messageElement);
 				currentMessages.push(msg);
-			} else if (currentMessages[pos] == msg) {
-				continue;
 			} else {
 				var messageElement;
 				messageElement = document.getElementById(`msg${pos}`);
@@ -40,10 +38,10 @@ function displayMessageChain() {
 
 function sendMessage() {
 	message = document.getElementById("message").value;
-        var oReq = new XMLHttpRequest();
-        oReq.open("POST", "/chat");
-        oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        oReq.send(`recipient=${currentStore}&message=${message}&timestamp=${new Date().getTime()}`);
+	var oReq = new XMLHttpRequest();
+	oReq.open("POST", "/chat");
+	oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	oReq.send(`recipient=${currentStore}&message=${message}&timestamp=${new Date().getTime()}`);
 	displayMessageChain();
 }
 
