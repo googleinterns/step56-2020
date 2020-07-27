@@ -26,27 +26,40 @@ import com.google.gson.Gson;
 
 @WebServlet("/favorites")
 public class FavoritesServlet extends HttpServlet {
-  Favorites favorites = new Favorites();
-  UserService userService = UserServiceFactory.getUserService();
+    Favorites favorites = new Favorites();
+    UserService userService = UserServiceFactory.getUserService();
 
-  @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {    
-    response.setContentType("application/json");
-    Gson gson = new Gson();
-    String json = gson.toJson(favorites.getFavorites());
-    response.getWriter().println(json);
-  }
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {    
+        response.setContentType("application/json");
+        Gson gson = new Gson();
+        String json = gson.toJson(favorites.getFavorites());
+        response.getWriter().println(json);
+    }
 
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {    
-    // Get current user's email address
-    String user = userService.getCurrentUser().getEmail();
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {    
+        // Get current user's email address
+        String user = userService.getCurrentUser().getEmail();
 
-    // Get the restaurant ID from the server
-    String placeID = request.getParameter("placeID");
+        // Get the restaurant ID and name from the server
+        String placeID = request.getParameter("placeID");
+        String placeName = request.getParameter("placeName");
+        String addToList = request.getParameter("addOrRemove");
 
-    // Store user's favorited restaurant
-    favorites.addToFavoritesList(user, placeID);
-  }
+        if (addToList.equals("add")) {  
+            // Store user's favorited restaurant
+            favorites.addToFavoritesList(user, placeID, placeName);
+        } else {    // Remove from user's favorited list
+            favorites.removeFromFavoritesList(user, placeID, placeName);
+        }
+    }
 
+    private String getParameter(HttpServletRequest request, String name, String defaultValue) {
+        String value = request.getParameter(name);
+        if (value == null) {
+            return defaultValue;
+        }
+        return value;
+    }
 }
