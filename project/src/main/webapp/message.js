@@ -49,4 +49,4 @@ setInterval(async function(){
 	if (currentStore != null) {
 		displayMessageChain()
 	}
-}, 1 * 30 * 1000);
+}, 1 * 1 * 1000);
