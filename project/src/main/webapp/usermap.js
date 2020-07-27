@@ -97,25 +97,29 @@ function addMarker(map, location, labelText, imageLink, id) {
 		currentMessages = [];
 		displayMessageChain();
 		showCatalog(id);
-		var add = document.getElementById("add-favorite");
-		add.hidden = false;
-		document.getElementById("chat-div").hidden = false;
+        var add = document.getElementById("add-favorite");
+        var remove = document.getElementById("remove-favorite");
+        var addOrRemove = "";
+        if (remove.hidden == false) {
+            remove.hidden = true;
+        } 
+        add.hidden = false;
 		add.innerText = "Add to Favorites";
-		var remove = document.getElementById("remove-favorite");
-		var addOrRemove = "add";
-		add.onclick = () => {
-			addServerInfo(id, labelText, addOrRemove);       
-			add.hidden = true;
-			remove.hidden = false;
-			remove.innerText = "Remove Favorite";
-		}
-		remove.onclick = () => {
-			addOrRemove = "remove";
-			addServerInfo(id, labelText, addOrRemove);      
-			remove.hidden = true;
-			add.hidden = false;
-			add.innerText = "Add to Favorite";
-		}
+        
+        add.onclick = () => {
+            addOrRemove = "add";
+            addServerInfo(id, labelText, addOrRemove);       
+            add.hidden = true;
+            remove.hidden = false;
+            remove.innerText = "Remove Favorite";
+        }
+        remove.onclick = () => {
+            addOrRemove = "remove";
+            addServerInfo(id, labelText, addOrRemove);      
+            remove.hidden = true;
+            add.hidden = false;
+            add.innerText = "Add to Favorite";
+        }      
 	});
 	return marker;
 }
