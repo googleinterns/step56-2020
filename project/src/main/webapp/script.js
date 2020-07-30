@@ -58,16 +58,6 @@ function createHistoryElement(search) {
     return searchElement;
 }
 
-/*
-// Adds the selected restaurant to favorites
-function addFavorite(placeID) {
-	var oReq = new XMLHttpRequest();
-    oReq.open("POST", "/favorites");
-    oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    oReq.send(`placeID=${placeID}`);
-}
-*/
-
 // Display user's favorite restaurants in "Favorites" bar
 function displayFavorites() {
     fetch('/favorites').then(response => response.json()).then((favorites) => {
@@ -87,7 +77,7 @@ function createFavoritesElement(favorite) {
     const favElement = document.createElement('a');
     favElement.innerText = favorite;
     favElement.appendChild(br);
-    //favElement.addEventListener("click", openModal(), false);
+    favElement.addEventListener("click", openModal(), false);
     return favElement;
 }
 
@@ -167,7 +157,11 @@ function displayPopular() {
 function createPopularElement(restaurant, score) {
     const popElement = document.createElement('a');
     const br = document.createElement('br');
-    popElement.innerText = restaurant + "; Favorited by " + score + " users";
+    var endString = " users";
+    if (score == 1) {
+        endString = " user";
+    }
+    popElement.innerText = restaurant + "; Favorited by " + score + endString;
     popElement.appendChild(br);
     //popElement.addEventListener("click", openModal(), false);
     return popElement;
