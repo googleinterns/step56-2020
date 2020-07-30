@@ -25,6 +25,7 @@ import com.google.appengine.api.datastore.Query.Filter;
 import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.Query.FilterOperator;
 
+
 /** Class containing users' favorite restaurants. */
 public final class Favorites {
     private String userEmail = "";
@@ -40,7 +41,7 @@ public final class Favorites {
     }   
 
     public void addToFavoritesList(String user, String placeID, String placeName) {
-        System.out.println("adding to fav list");
+        System.out.println("ADDING 3");
         userEmail = user; 
         // Store favorite restaurant in Datastore
         Entity favoriteEntity = new Entity("Favorites");
@@ -49,10 +50,9 @@ public final class Favorites {
         favoriteEntity.setProperty("favoriteName", placeName);     
         datastore.put(favoriteEntity);
     }
-
     
     public void removeFromFavoritesList(String user, String placeID, String placeName) {
-        System.out.println("removing from fav list");
+        System.out.println("REMOVING 3");
         userEmail = user; 
         // Remove favorite restaurant in Datastore
         Filter propertyFilter = new FilterPredicate("user", FilterOperator.EQUAL, userEmail);
@@ -61,8 +61,8 @@ public final class Favorites {
         for (Entity entity : results.asIterable()) {
             String fav = (String) entity.getProperty("favoriteName");
             if (fav.equals(placeName)) {
-                //datastore.remove(entity);
                 datastore.delete(entity.getKey());
+                //entity.getKey().delete();
             }
             break;
         }

@@ -107,6 +107,7 @@ function addMarker(map, location, labelText, imageLink, id) {
 		add.innerText = "Add to Favorites";
         
         add.onclick = () => {
+            console.log("ADDING");
             addOrRemove = "add";
             addServerInfo(id, labelText, addOrRemove);       
             add.hidden = true;
@@ -114,11 +115,12 @@ function addMarker(map, location, labelText, imageLink, id) {
             remove.innerText = "Remove Favorite";
         }
         remove.onclick = () => {
+            console.log("REMOVING");
             addOrRemove = "remove";
             addServerInfo(id, labelText, addOrRemove);      
             remove.hidden = true;
             add.hidden = false;
-            add.innerText = "Add to Favorite";
+            add.innerText = "Add to Favorites";
         }      
 	});
 	return marker;

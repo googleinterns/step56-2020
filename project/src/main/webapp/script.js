@@ -136,26 +136,29 @@ function displayPopular() {
         const popularList = document.getElementById('popular-list');
         popularList.innerHTML = "";
 
-        console.log("popular hashmap: " + popular);
         // Get list of restaurants with the 5 highest popularity scores
         var popScores = [];
+        var popNames = [];
         for (const key in popular) {
             popScores.push(popular[key]);
+            popNames.push(key);
         }
-        console.log("popular scores: " + popScores);
         var maxLength = 5;
         if (popScores.length < 5) {
             maxLength = popScores.length;
         } 
         for (var i = 0; i < maxLength; i++) {
             const highestScore = Math.max.apply(Math, popScores);
+            if (highestScore <= 0) {
+                break;
+            }
             const index = popScores.indexOf(highestScore);
             if (index > -1) {
                 popScores.splice(index, 1);
             }
-            const restaurantName = Object.keys(popular).find(k=>popular[k]===highestScore);
-            console.log(restaurantName);
+            const restaurantName = popNames[index];
             popularList.appendChild(createPopularElement(restaurantName, highestScore));
+            popNames.splice(index, 1);
         }
     });
 }

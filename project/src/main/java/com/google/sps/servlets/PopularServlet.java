@@ -30,6 +30,7 @@ public class PopularServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {    
         response.setContentType("application/json");
         String json = new Gson().toJson(popular.getPopular());
+        System.out.println("Popular servlet: " + json);
         response.getWriter().println(json);
     }
 
