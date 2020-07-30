@@ -127,8 +127,7 @@ public final class PopularTest {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         Popular popular = new Popular(datastore);
 
-        popular.addToPopularList(placeID_1, placeName_1); 
-        popular.removeFromPopularList(placeID_1, placeName_1); 
+        popular.addToPopularList(placeID_1, placeName_1); popular.removeFromPopularList(placeID_1, placeName_1); 
         Map<String, Long> actual = popular.getPopular();
         Map<String, Long> expected = new HashMap<>();
         expected.put(placeName_1, score_0);

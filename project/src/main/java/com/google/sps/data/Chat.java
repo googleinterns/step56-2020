@@ -40,6 +40,10 @@ public final class Chat {
 		datastore.put(tmessage.getEntity());
 	}
 
+	public static void addMessage(Message message, DatastoreService datastore) {
+		datastore.put(message.getEntity());
+	}
+
 	public static String toJson(List<Message> chain){
 		return new Gson().toJson(chain);
 	}
@@ -52,28 +56,28 @@ public final class Chat {
 				);
 	}
 
-		public static List<Message> getMessageChain(String userA, String userB, DatastoreService datastore) {
-			Query query;
-			PreparedQuery results;
-			List<Message> messages = new ArrayList<>();
-			Filter writerAFilter = createWriterRecipientFilter(userA, userB);
-			Filter writerBFilter = createWriterRecipientFilter(userB, userA); 
-			query = new Query("Message")
-				.setFilter(writerAFilter)
-				.addSort("timestamp", SortDirection.ASCENDING);
-			results = datastore.prepare(query);
-			for (Entity entity : results.asIterable()) {
-				messages.add(new Message(userA, userB, (String) entity.getProperty("message"), (Long) entity.getProperty("timestamp")));
-			}
-
-			query = new Query("Message")
-				.setFilter(writerBFilter)
-				.addSort("timestamp", SortDirection.DESCENDING);
-			results = datastore.prepare(query);
-			for (Entity entity : results.asIterable()) {
-				messages.add(new Message(userB, userA, (String) entity.getProperty("message"), (Long) entity.getProperty("timestamp")));
-			}
-			return messages;
+	public static List<Message> getMessageChain(String userA, String userB, DatastoreService datastore) {
+		Query query;
+		PreparedQuery results;
+		List<Message> messages = new ArrayList<>();
+		Filter writerAFilter = createWriterRecipientFilter(userA, userB);
+		Filter writerBFilter = createWriterRecipientFilter(userB, userA); 
+		query = new Query("Message")
+			.setFilter(writerAFilter)
+			.addSort("timestamp", SortDirection.ASCENDING);
+		results = datastore.prepare(query);
+		for (Entity entity : results.asIterable()) {
+			messages.add(new Message(userA, userB, (String) entity.getProperty("message"), (Long) entity.getProperty("timestamp")));
 		}
 
+		query = new Query("Message")
+			.setFilter(writerBFilter)
+			.addSort("timestamp", SortDirection.DESCENDING);
+		results = datastore.prepare(query);
+		for (Entity entity : results.asIterable()) {
+			messages.add(new Message(userB, userA, (String) entity.getProperty("message"), (Long) entity.getProperty("timestamp")));
+		}
+		return messages;
 	}
+
+}
