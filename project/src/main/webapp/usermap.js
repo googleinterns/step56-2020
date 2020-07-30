@@ -97,29 +97,35 @@ function addMarker(map, location, labelText, imageLink, id) {
 		currentMessages = [];
 		displayMessageChain();
 		showCatalog(id);
-        var add = document.getElementById("add-favorite");
-        var remove = document.getElementById("remove-favorite");
-        var addOrRemove = "";
-        if (remove.hidden == false) {
-            remove.hidden = true;
-        } 
-        add.hidden = false;
+		currentStore = id;
+		var d = document.getElementById("add-favorite");
+		d.hidden = false;
+		d.innerText = "Add To Favorite";
+		d = document.getElementById("chat-div");
+		d.hidden = false;
+		var add = document.getElementById("add-favorite");
+		var remove = document.getElementById("remove-favorite");
+		var addOrRemove = "";
+		if (remove.hidden == false) {
+			remove.hidden = true;
+		} 
+		add.hidden = false;
 		add.innerText = "Add to Favorites";
-        
-        add.onclick = () => {
-            addOrRemove = "add";
-            addServerInfo(id, labelText, addOrRemove);       
-            add.hidden = true;
-            remove.hidden = false;
-            remove.innerText = "Remove Favorite";
-        }
-        remove.onclick = () => {
-            addOrRemove = "remove";
-            addServerInfo(id, labelText, addOrRemove);      
-            remove.hidden = true;
-            add.hidden = false;
-            add.innerText = "Add to Favorite";
-        }      
+
+		add.onclick = () => {
+			addOrRemove = "add";
+			addServerInfo(id, labelText, addOrRemove);       
+			add.hidden = true;
+			remove.hidden = false;
+			remove.innerText = "Remove Favorite";
+		}
+		remove.onclick = () => {
+			addOrRemove = "remove";
+			addServerInfo(id, labelText, addOrRemove);      
+			remove.hidden = true;
+			add.hidden = false;
+			add.innerText = "Add to Favorite";
+		}      
 	});
 	return marker;
 }
