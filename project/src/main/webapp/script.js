@@ -58,16 +58,6 @@ function createHistoryElement(search) {
     return searchElement;
 }
 
-/*
-// Adds the selected restaurant to favorites
-function addFavorite(placeID) {
-	var oReq = new XMLHttpRequest();
-    oReq.open("POST", "/favorites");
-    oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    oReq.send(`placeID=${placeID}`);
-}
-*/
-
 // Display user's favorite restaurants in "Favorites" bar
 function displayFavorites() {
     fetch('/favorites').then(response => response.json()).then((favorites) => {
@@ -87,7 +77,7 @@ function createFavoritesElement(favorite) {
     const favElement = document.createElement('a');
     favElement.innerText = favorite;
     favElement.appendChild(br);
-    //favElement.addEventListener("click", openModal(), false);
+    favElement.addEventListener("click", openModal(), false);
     return favElement;
 }
 
@@ -136,26 +126,29 @@ function displayPopular() {
         const popularList = document.getElementById('popular-list');
         popularList.innerHTML = "";
 
-        console.log("popular hashmap: " + popular);
         // Get list of restaurants with the 5 highest popularity scores
         var popScores = [];
+        var popNames = [];
         for (const key in popular) {
             popScores.push(popular[key]);
+            popNames.push(key);
         }
-        console.log("popular scores: " + popScores);
         var maxLength = 5;
         if (popScores.length < 5) {
             maxLength = popScores.length;
         } 
         for (var i = 0; i < maxLength; i++) {
             const highestScore = Math.max.apply(Math, popScores);
+            if (highestScore <= 0) {
+                break;
+            }
             const index = popScores.indexOf(highestScore);
             if (index > -1) {
                 popScores.splice(index, 1);
             }
-            const restaurantName = Object.keys(popular).find(k=>popular[k]===highestScore);
-            console.log(restaurantName);
+            const restaurantName = popNames[index];
             popularList.appendChild(createPopularElement(restaurantName, highestScore));
+            popNames.splice(index, 1);
         }
     });
 }
@@ -164,7 +157,11 @@ function displayPopular() {
 function createPopularElement(restaurant, score) {
     const popElement = document.createElement('a');
     const br = document.createElement('br');
-    popElement.innerText = restaurant + "; Favorited by " + score + " users";
+    var endString = " users";
+    if (score == 1) {
+        endString = " user";
+    }
+    popElement.innerText = restaurant + "; Favorited by " + score + endString;
     popElement.appendChild(br);
     //popElement.addEventListener("click", openModal(), false);
     return popElement;
