@@ -9,6 +9,7 @@ var numberOfPlaces = 20;
 var unitDistance = 1;
 var markerList = [];
 var searchQuery = "restaurant";
+var popular = [];
 var currentLocation, placesPromise, currentStore;
 
 var infoWindow = new google.maps.InfoWindow;
@@ -78,7 +79,9 @@ function placesCallback(results, pstatus) {
 	var placesList = [];
 	if (pstatus == google.maps.places.PlacesServiceStatus.OK) {
 		for(let i = 0; i < results.length; i++){
-			placesList.push(results[i]);
+			if(!(results[i] in popular)){
+				placesList.push(results[i]);
+			}
 		}
 	}
 	return placesList;
@@ -86,7 +89,7 @@ function placesCallback(results, pstatus) {
 
 
 function addMarker(map, location, labelText, imageLink, id) {
-	var image = {url: imageLink, size: new google.maps.Size(20, 32)};
+	var image = {url: imageLink, size: new google.maps.Size(24, 32)};
 	var marker = new google.maps.Marker({
 		position: location,
 		label: labelText,
