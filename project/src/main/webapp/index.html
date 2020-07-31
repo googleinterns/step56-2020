@@ -1,20 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=3, shrink-to-fit=no">
     <title>Cerca</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script src="script.js"></script>
     <link rel="stylesheet" href="style.css"></link>
 </head>
-<body onload="start()" style="max-width: fit-content;">
-    <div class="container-fluid" style="text-align:center;">
-        <h1 style="color:rgb(36, 168, 240);">CERCA</h1>
+<body onload="start()">
+    <div class="container-fluid  py-4" style="text-align:center;">
+        <h1 class="text-primary">CERCA</h1>
     </div>
-    <div class="container-fluid px-lg-5;">
-        <div class="row mx-lg-n5">
-            <div class="col py-3 px-lg-5 border bg-light" >Filters: <br>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col border bg-light">
+                <h5 class="text-primary my-3" >Filters</h5>
+                <hr/>
                 Radius: &nbsp;
                 <select id="mySelectRadius" onchange="radiusChange(this)">
                     <option value="10000">10 Km</option>
@@ -36,91 +40,159 @@
                     <option value="$$">$$</option>
                     <option value="$$$">$$$</option>
                 </select> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <button type="button" onclick="filterChoices()">Search</button>
+                <button type="button" onclick="filterChoices()" class="btn btn-outline-primary">Search</button>
                 <br><br><br><br><br>
                 <div id="search-form">
                         <div class="search-form-group">
-                            <label id="search">Search Bar</label>
-                            <input type="search" class="form-control form-control-sm" id="search-input" name="search-input" aria-describedby="emailHelp" autocomplete="off">
+                            <input type="search" class="form-control form-control" 
+                            id="search-input" name="search-input" 
+                            aria-describedby="emailHelp" 
+                            autocomplete="off" 
+                            placeholder="Search"><br/>                            
                             <div class="dropdown">
-                                <button class="dropbtn">History</button>
+                                <button class="dropbtn btn btn-outline-primary"  >History</button>
                                 <div class="dropdown-content" id="history-content"></div>
                             </div>
                         </div> <br>
-                        <button onclick="displaySearchResults()">Search</button>
+                        <button onclick="displaySearchResults()" class="btn btn-outline-primary mb-3">Search</button>
                 </div>
             </div>
-            <div class="col py-3 px-lg-5 border bg-light">
+            <div class="col border bg-light">
                 <div id="login-greeting"></div>
                 <div id="login-container"></div> <br><br>
-                Favorites: <br> 
+                <h5 class="text-primary">Favorites</h5>
+                <hr/>
                 <div id="favorites-bar">
                     <a onclick="openModal()"> Example </a>
                     <!-- Modal -->
                     <div id="favoritesModal" class="modal">
                         <!-- Modal content -->
-                        <div class="modal-content">
+                            <div class="modal-content">
                             <span class="close" onclick="closeModal()">&times;</span>
                             <button type="button" onclick="visitPage()">Go to page</button> &nbsp;
                             <button type="button" onclick="shareableURL()">Get shareable URL</button>                                              
                         </div>
                     </div>
                 </div> <br><br>
-                Popular: <br>
-                <div id="popular-list">
+                <h5 class="text-primary">Popular</h5>
+                <hr/>
+                <div id="popular-list"></div>
             </div>
         </div>
     </div>
-    <div class="container-fluid px-lg-5;" style="margin-top:45px">
-        <div class="row mx-lg-n5">
-            <div id="Catalog" class="col py-3 px-lg-5">
-                <div class="gallery">
-                    <img id="image" style="margin-bottom:20px;"></img><br>
-                    <a href="#" class="previous" 
-                                style="padding: 15px; background-color: #58add363; margin-right:5px;" 
-                                onclick="previous()">&#8249;
-                    </a>
-                    <a href="#" class="next"
-                                style="padding: 15px; background-color: #58add363; margin-left:5px;"
-                                onclick="next()">&#8250;
-                    </a>
-                    <div id="rating" style="margin: 15px"></div>
-                    <div id="reviews">
-                        <div id="review-space"></div>
-                        <button id="review-button" onclick="showForm()">Write a Review</button>
-                            <form id="review-form" hidden>
-                                <textarea id="user-review" placeholder="write a review"></textarea><br/>
-                                <input type="submit" value="submit"/>
-                            </form>
-                    </div>
+    <div class="container-fluid my-5 border border-primary p-0" >
+        <div class="jumbotron-fluid p-0">
+            <div id="map" style="height:400px;"></div>  
+        </div>     
+    </div>
+
+
+    <div id="container-3" class="container-fluid my-5 bg-light" style="heigh:400px; width:100%;" hidden>
+        <div class="row">
+            <div class="col rounded border border-primary py-1">
+                <div id="mycarousel" class="carousel slide mx-auto" data-ride="carousel" style="height:inherent; width:100%;">
+                        <ul class="carousel-indicators">
+                            <li data-target="#mycarousel" data-slide-to="0" class="active"></li>
+                            <li data-target="#mycarousel" data-slide-to="1"></li>
+                            <li data-target="#mycarousel" data-slide-to="2"></li>
+                            <li data-target="#mycarousel" data-slide-to="3"></li>
+                            <li data-target="#mycarousel" data-slide-to="4"></li>
+                            <li data-target="#mycarousel" data-slide-to="5"></li>
+                            <li data-target="#mycarousel" data-slide-to="6"></li>
+                            <li data-target="#mycarousel" data-slide-to="7"></li>
+                            <li data-target="#mycarousel" data-slide-to="8"></li>
+                        </ul>
+
+                        <!-- The slideshow -->
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img  class="carousel-image" src alt="Cllck on a Marker to Show Catalog">
+                            </div>
+                            <div class="carousel-item">
+                                <img  class="carousel-image" src alt="Cllck on a Marker to Show Catalog">
+                                </div>
+                            <div class="carousel-item">
+                                <img  class="carousel-image" src alt="Cllck on a Marker to Show Catalog">
+                            </div>
+                            <div class="carousel-item">
+                                <img  class="carousel-image" src alt="Cllck on a Marker to Show Catalog">
+                            </div>
+                            <div class="carousel-item">
+                                <img  class="carousel-image" src alt="Cllck on a Marker to Show Catalog">
+                            </div>
+                            <div class="carousel-item">
+                                <img  class="carousel-image" src alt="Cllck on a Marker to Show Catalog">
+                            </div>
+                            <div class="carousel-item">
+                                <img  class="carousel-image" src alt="Cllck on a Marker to Show Catalog">
+                            </div>
+                            <div class="carousel-item">
+                                <img  class="carousel-image" src alt="Cllck on a Marker to Show Catalog">
+                            </div>
+                            <div class="carousel-item">
+                                <img  class="carousel-image" src alt="Cllck on a Marker to Show Catalog">
+                            </div>
+                            <div class="carousel-item">
+                                <img  class="carousel-image" src alt="Cllck on a Marker to Show Catalog">
+                            </div>   
+                        </div>
+
+                        <a class="carousel-control-prev" href="#mycarousel" data-slide="prev">
+                            <span class="carousel-control-prev-icon"></span>
+                        </a>
+                        <a class="carousel-control-next" href="#mycarousel" data-slide="next">
+                            <span class="carousel-control-next-icon"></span>
+                        </a>
+                </div>
+                <div class="container-fluid p-0">
+                    <button id="add-favorite" class="btn btn-outline-primary my-3 ml-0" hidden></button>
+                    <button id ="remove-favorite" class="btn btn-outline-primary my-3 ml-0" hidden></button>
                 </div>
             </div>
-	    <button id="add-favorite" hidden></button>
-        <button id ="remove-favorite" hidden></button>
-	    <div id="map" style="height:400px;"></div>
+            <div class="col rounded border border-primary py-1 review-container" style="overflow-x:auto;">
+                    <h5 class="text-primary mt-3 mb-4 px-0">Reviews</h5>
+                    <p id="rating"  class="container my-1 px-0 font-weight-bold"></p>
+                    <p id="address" class="container my-1 px-0 "></p>
+                    <hr id="review-hr" class="container px-0 mt-0 mb-2 border-primary">
+                    <div id="review-space" style="height: 350px; width: 100%"></div>
+                    <!-- <button id="review-button" onclick="showForm()">Write a Review</button>
+                    <form id="review-form" hidden>
+                        <textarea id="user-review" placeholder="write a review"></textarea><br/>
+                        <input type="submit" value="submit"/>
+                    </form> -->
             </div>
-        </div>
-	<div id="chat-div" hidden>
-		<ul id="message-chain"></ul>
-		<br>
-		<br>
-		<textarea id="message" rows="4" cols="50"></textarea>
-		<br>
-		<br>
-		<button type="button" onclick="sendMessage()">Send</button>
-	<script src="usermap.js"></script>
-	</div>
+        </div>    
     </div>
-    <div style="text-align:center; background-color: rgb(205, 233, 247); padding: 100px; margin-top:45px">
-        <p><h1>Objective</h1></p>
-        <p>Our goal is to create a platform that will make it easy for consumers to support local businesses that have been impacted by the coronavirus pandemic. We plan on achieving this by creating filters that cater to various user preferences, highlighting the small businesses within a user’s region, displaying local stores’ catalogues, and facilitating communication between consumers and merchants. </p>
+    <div class="container-fluid bg-light border rounded border-primary" style="height:400px;" id="chat-div" hidden>
+        <ul id="message-chain"></ul>
+        <br>
+        <br>
+        <textarea id="message" rows="4" cols="50"></textarea>
+        <br>
+        <br>
+        <button type="button" class="btn btn-outline-primary"onclick="sendMessage()">Send</button>
+        <script src="usermap.js"></script>
     </div>
+
+    
+
+    <footer class="container-fluid bg-primary mt-5 py-auto" style="height:300px;">
+        <div class="row py-2 ml-3 text-center"> 
+            <div class="col-md-4 px-2">
+            </div>  
+            <div class="col-md-4 px-2">
+                <h1 class="text-light display-3">CERCA</h1>
+                <img class="rounded-circle" src="img/banana.jpeg" style="height: 160px; width: 160px;"></img>
+            </div>
+            <div class="col-md-4 px-2">
+            </div>
+        </div> 
+    </footer>
 	<script	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEVKOx6yO8pM10Jj39HXSkS4HYEv8nBJ8&libraries=places"></script>
 	<script src="catalog.js"></script>
 	<script src="usermap.js"></script>
 	<script src="message.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 </body>
 </html>

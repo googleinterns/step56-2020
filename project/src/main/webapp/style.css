@@ -23,14 +23,6 @@
   border-radius: 50%;
 }
 
-.dropbtn {
-  background-color: #4CAF50;
-  color: white;
-  padding: 16px;
-  font-size: 16px;
-  border: none;
-}
-
 .dropdown {
   position: relative;
   display: inline-block;
@@ -60,8 +52,8 @@
 
 
 #map {
-	height: 30%;
-	width: 30%
+	height: 100%;
+	width: 100%
 }
 html, body {
 	height: 100%;
@@ -105,4 +97,18 @@ html, body {
   color: black;
   text-decoration: none;
   cursor: pointer;
+}
+
+.header {
+    box-Shadow: 0 5px 10px #efefef;
+}
+
+.carousel-image {
+    height: 400px;
+    width: 100%;
+    object-fit:contain;
+}
+
+#review-space {
+    object-fit: contain;
 }
