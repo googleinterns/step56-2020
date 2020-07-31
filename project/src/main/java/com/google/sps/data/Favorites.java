@@ -61,6 +61,7 @@ public final class Favorites {
         for (Entity entity : results.asIterable()) {
             String fav = (String) entity.getProperty("favoriteName");
             if (fav.equals(placeName)) {
+                System.out.println("REMOVING 4");
                 datastore.delete(entity.getKey());
                 //entity.getKey().delete();
             }

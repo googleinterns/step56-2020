@@ -174,3 +174,9 @@ setInterval(async function(){
 		resetMap(newCurrentLocation, searchQuery, currentZoom, currentRadius, numberOfPlaces);
 	}
 }, 1 * 30 * 1000);
+
+//Every 30 seconds, if the new location is unitDistance away from the previous location the map reloads, distance measured in taxicab metric
+setInterval(async function(){ 
+    displayFavorites();
+	displayPopular();
+}, 1 * 1 * 1000);
