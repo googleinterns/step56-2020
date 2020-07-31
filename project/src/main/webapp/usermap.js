@@ -1,3 +1,5 @@
+var popular = ["McDonald's", "Burger King", "KFC", "Subway", "Wendy's", "Starbucks", "Chipotle", "Taco Bell", "Pizza Hut", "Chick-fil-a", "Dairy Queen"];
+
 // get filters
 // max distance
 // use maps, applys to make userMap
@@ -9,7 +11,6 @@ var numberOfPlaces = 20;
 var unitDistance = 1;
 var markerList = [];
 var searchQuery = "restaurant";
-var popular = [];
 var currentLocation, placesPromise, currentStore;
 
 var infoWindow = new google.maps.InfoWindow;
@@ -79,7 +80,7 @@ function placesCallback(results, pstatus) {
 	var placesList = [];
 	if (pstatus == google.maps.places.PlacesServiceStatus.OK) {
 		for(let i = 0; i < results.length; i++){
-			if(!(results[i] in popular)){
+			if(!(results[i].name in popular)){
 				placesList.push(results[i]);
 			}
 		}
@@ -89,10 +90,11 @@ function placesCallback(results, pstatus) {
 
 
 function addMarker(map, location, labelText, imageLink, id) {
-	var image = {url: imageLink, size: new google.maps.Size(24, 32)};
+	var image = {url: imageLink, scaledSize: new google.maps.Size(24, 32)};
+	var label = {fontSize: "10px", text: labelText.slice(0,5)+"..."};
 	var marker = new google.maps.Marker({
 		position: location,
-		label: labelText,
+		label: label,
 		icon: image,
 		map: map
 	});
