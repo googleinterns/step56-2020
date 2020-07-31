@@ -57,6 +57,12 @@
         <version>1.9.17</version>
         <scope>test</scope>
     </dependency>
+    <dependency>
+        <groupId>com.google.appengine</groupId>
+        <artifactId>appengine-tools-sdk</artifactId>
+        <version>1.9.17</version>
+        <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>

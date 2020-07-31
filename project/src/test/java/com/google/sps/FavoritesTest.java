@@ -14,6 +14,8 @@
 
 package com.google.sps;
 
+import com.google.sps.data.Message;
+import com.google.sps.data.Chat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -43,118 +45,130 @@ import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 /** Favorites Tests */
 @RunWith(JUnit4.class)
 public final class FavoritesTest {
-    Query query; 
+	Query query; 
 
-    private static final String userEmail_1 = "srosset@google.com";
-    private static final String userEmail_2 = "sophia@google.com";
+	private static final String userEmail_1 = "srosset@google.com";
+	private static final String userEmail_2 = "sophia@google.com";
 
-    private static final String placeID_1 = "1234";
-    private static final String placeID_2 = "2345";
-    private static final String placeID_3 = "1357";
+	private static final String placeID_1 = "1234";
+	private static final String placeID_2 = "2345";
+	private static final String placeID_3 = "1357";
 
-    private static final String placeName_1 = "Azuma";
-    private static final String placeName_2 = "Bistro 808";
-    private static final String placeName_3 = "Chat 19";
+	private static final String placeName_1 = "Azuma";
+	private static final String placeName_2 = "Bistro 808";
+	private static final String placeName_3 = "Chat 19";
 
-    private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+	private final LocalServiceTestHelper helper = new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
-    @Before
-    public void setUp() {
-        helper.setUp();
-    }
+	@Before
+	public void setUp() {
+		helper.setUp();
+	}
 
-    @After
-    public void tearDown() {
-        helper.tearDown();
-    }
+	@After
+	public void tearDown() {
+		helper.tearDown();
+	}
 
-    @Test
-    public void addNewPlaceToFavorites() {
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        Favorites favorites = new Favorites(datastore);
-        favorites.addToFavoritesList(userEmail_1, placeID_1, placeName_1);
-        
-        List<String> actual = favorites.getFavorites();
-        List<String> expected = new ArrayList<>();
-        expected.add(placeName_1);
+	@Test
+	public void testNoEmptyMessage() {
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		List<Message> actual;
+		List<Message> expected = new ArrayList<>();
 
-        Assert.assertEquals(expected, actual);
-    }
-    
-    @Test
-    public void addTwoPlacesToFavorites() {
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        Favorites favorites = new Favorites(datastore);
-        favorites.addToFavoritesList(userEmail_1, placeID_1, placeName_1);
-        favorites.addToFavoritesList(userEmail_1, placeID_2, placeName_2);
+		Chat.addMessage(new Message("Alice", "Bob", "", 0l), datastore);
 
-        List<String> actual = favorites.getFavorites();
-        List<String> expected = new ArrayList<>();
-        expected.add(placeName_1);
-        expected.add(placeName_2);
+		actual = Chat.getMessageChain("Alice", "Bob", datastore);
+		Assert.assertEquals(expected, actual);
+	}
 
-        Assert.assertEquals(expected, actual);
-    }
+	@Test
+	public void addNewPlaceToFavorites() {
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		Favorites favorites = new Favorites(datastore);
+		favorites.addToFavoritesList(userEmail_1, placeID_1, placeName_1);
 
-    @Test
-    public void addTwoPlacesToFavoritesAndRemoveOne() {
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        Favorites favorites = new Favorites(datastore);
-        favorites.addToFavoritesList(userEmail_1, placeID_1, placeName_1);
-        favorites.addToFavoritesList(userEmail_1, placeID_2, placeName_2);
-        favorites.removeFromFavoritesList(userEmail_1, placeID_1, placeName_1);
+		List<String> actual = favorites.getFavorites();
+		List<String> expected = new ArrayList<>();
+		expected.add(placeName_1);
 
-        List<String> actual = favorites.getFavorites();
-        List<String> expected = new ArrayList<>();
-        expected.add(placeName_2);
+		Assert.assertEquals(expected, actual);
+	}
 
-        Assert.assertEquals(expected, actual);
-    }
+	@Test
+	public void addTwoPlacesToFavorites() {
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		Favorites favorites = new Favorites(datastore);
+		favorites.addToFavoritesList(userEmail_1, placeID_1, placeName_1);
+		favorites.addToFavoritesList(userEmail_1, placeID_2, placeName_2);
 
-    @Test
-    public void addToFavoritesDiffEmails() {
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        Favorites favorites = new Favorites(datastore);
-        favorites.addToFavoritesList(userEmail_1, placeID_1, placeName_1);
-        favorites.addToFavoritesList(userEmail_2, placeID_2, placeName_2);
+		List<String> actual = favorites.getFavorites();
+		List<String> expected = new ArrayList<>();
+		expected.add(placeName_1);
+		expected.add(placeName_2);
 
-        List<String> actual = favorites.getFavorites();
-        List<String> expected = new ArrayList<>();
-        expected.add(placeName_2);
+		Assert.assertEquals(expected, actual);
+	}
 
-        Assert.assertEquals(expected, actual);
-    }
+	@Test
+	public void addTwoPlacesToFavoritesAndRemoveOne() {
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		Favorites favorites = new Favorites(datastore);
+		favorites.addToFavoritesList(userEmail_1, placeID_1, placeName_1);
+		favorites.addToFavoritesList(userEmail_1, placeID_2, placeName_2);
+		favorites.removeFromFavoritesList(userEmail_1, placeID_1, placeName_1);
 
-    @Test
-    public void addToFavoritesDiffEmailsOutOfOrder() {
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        Favorites favorites = new Favorites(datastore);
-        favorites.addToFavoritesList(userEmail_2, placeID_2, placeName_2);
-        favorites.addToFavoritesList(userEmail_1, placeID_1, placeName_1);
-        favorites.addToFavoritesList(userEmail_2, placeID_3, placeName_3);
+		List<String> actual = favorites.getFavorites();
+		List<String> expected = new ArrayList<>();
+		expected.add(placeName_2);
 
-        List<String> actual = favorites.getFavorites();
-        List<String> expected = new ArrayList<>();
-        expected.add(placeName_2);
-        expected.add(placeName_3);
+		Assert.assertEquals(expected, actual);
+	}
 
-        Assert.assertEquals(expected, actual);
-    } 
+	@Test
+	public void addToFavoritesDiffEmails() {
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		Favorites favorites = new Favorites(datastore);
+		favorites.addToFavoritesList(userEmail_1, placeID_1, placeName_1);
+		favorites.addToFavoritesList(userEmail_2, placeID_2, placeName_2);
 
-    @Test
-    public void removeFromFavList() {
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        Favorites favorites = new Favorites(datastore);
-        favorites.addToFavoritesList(userEmail_2, placeID_2, placeName_2);
-        favorites.addToFavoritesList(userEmail_1, placeID_1, placeName_1);
-        favorites.addToFavoritesList(userEmail_2, placeID_3, placeName_3);
-        favorites.removeFromFavoritesList(userEmail_1, placeID_1, placeName_1);
+		List<String> actual = favorites.getFavorites();
+		List<String> expected = new ArrayList<>();
+		expected.add(placeName_2);
 
-        List<String> actual = favorites.getFavorites();
-        List<String> expected = new ArrayList<>();
+		Assert.assertEquals(expected, actual);
+	}
 
-        Assert.assertEquals(expected, actual);
-    } 
+	@Test
+	public void addToFavoritesDiffEmailsOutOfOrder() {
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		Favorites favorites = new Favorites(datastore);
+		favorites.addToFavoritesList(userEmail_2, placeID_2, placeName_2);
+		favorites.addToFavoritesList(userEmail_1, placeID_1, placeName_1);
+		favorites.addToFavoritesList(userEmail_2, placeID_3, placeName_3);
+
+		List<String> actual = favorites.getFavorites();
+		List<String> expected = new ArrayList<>();
+		expected.add(placeName_2);
+		expected.add(placeName_3);
+
+		Assert.assertEquals(expected, actual);
+	} 
+
+	@Test
+	public void removeFromFavList() {
+		DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+		Favorites favorites = new Favorites(datastore);
+		favorites.addToFavoritesList(userEmail_2, placeID_2, placeName_2);
+		favorites.addToFavoritesList(userEmail_1, placeID_1, placeName_1);
+		favorites.addToFavoritesList(userEmail_2, placeID_3, placeName_3);
+		favorites.removeFromFavoritesList(userEmail_1, placeID_1, placeName_1);
+
+		List<String> actual = favorites.getFavorites();
+		List<String> expected = new ArrayList<>();
+
+		Assert.assertEquals(expected, actual);
+	} 
 } 
 
 
