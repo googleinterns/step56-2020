@@ -86,10 +86,11 @@ function placesCallback(results, pstatus) {
 
 
 function addMarker(map, location, labelText, imageLink, id) {
+	var image = {url: imageLink, size: new google.maps.Size(20, 32)};
 	var marker = new google.maps.Marker({
 		position: location,
 		label: labelText,
-		icon: imageLink,
+		icon: image,
 		map: map
 	});
 	marker.addListener("click", function() {
