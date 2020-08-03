@@ -1,3 +1,5 @@
+var popular = ["McDonald's", "Burger King", "KFC", "Subway", "Wendy's", "Starbucks", "Chipotle", "Taco Bell", "Pizza Hut", "Chick-fil-a", "Dairy Queen"];
+
 // get filters
 // max distance
 // use maps, applys to make userMap
@@ -78,7 +80,9 @@ function placesCallback(results, pstatus) {
 	var placesList = [];
 	if (pstatus == google.maps.places.PlacesServiceStatus.OK) {
 		for(let i = 0; i < results.length; i++){
-			placesList.push(results[i]);
+			if(!(results[i].name in popular)){
+				placesList.push(results[i]);
+			}
 		}
 	}
 	return placesList;
@@ -86,45 +90,15 @@ function placesCallback(results, pstatus) {
 
 
 function addMarker(map, location, labelText, imageLink, id) {
+	var image = {url: imageLink, scaledSize: new google.maps.Size(24, 32)};
+	var label = {fontSize: "10px", text: labelText.slice(0,5)+"..."};
 	var marker = new google.maps.Marker({
 		position: location,
-		label: labelText,
-		icon: imageLink,
+		label: label,
+		icon: image,
 		map: map
 	});
 	marker.addListener("click", () => selectMarker(id, labelText), false);
-    /*
-    marker.addListener("click", function() {
-		currentStore = id;
-		currentMessages = [];
-		displayMessageChain();
-		showCatalog(id);
-        var add = document.getElementById("add-favorite");
-        var remove = document.getElementById("remove-favorite");
-        var addOrRemove = "";
-        if (remove.hidden == false) {
-            remove.hidden = true;
-        } 
-        add.hidden = false;
-		add.innerText = "Add to Favorites";
-        
-        add.onclick = () => {
-            console.log("ADDING");
-            addOrRemove = "add";
-            addServerInfo(id, labelText, addOrRemove);       
-            add.hidden = true;
-            remove.hidden = false;
-            remove.innerText = "Remove Favorite";
-        }
-        remove.onclick = () => {
-            console.log("REMOVING");
-            addOrRemove = "remove";
-            addServerInfo(id, labelText, addOrRemove);      
-            remove.hidden = true;
-            add.hidden = false;
-            add.innerText = "Add to Favorites";
-        }      
-	}); */
 	return marker;
 }
 
