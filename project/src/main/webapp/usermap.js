@@ -92,7 +92,9 @@ function addMarker(map, location, labelText, imageLink, id) {
 		icon: imageLink,
 		map: map
 	});
-	marker.addListener("click", function() {
+	marker.addListener("click", () => selectMarker(id, labelText), false);
+    /*
+    marker.addListener("click", function() {
 		currentStore = id;
 		currentMessages = [];
 		displayMessageChain();
@@ -122,8 +124,40 @@ function addMarker(map, location, labelText, imageLink, id) {
             add.hidden = false;
             add.innerText = "Add to Favorites";
         }      
-	});
+	}); */
 	return marker;
+}
+
+function selectMarker(id, labelText) {
+    currentStore = id;
+	currentMessages = [];
+	displayMessageChain();
+	showCatalog(id);
+        var add = document.getElementById("add-favorite");
+        var remove = document.getElementById("remove-favorite");
+        var addOrRemove = "";
+        if (remove.hidden == false) {
+            remove.hidden = true;
+        } 
+        add.hidden = false;
+		add.innerText = "Add to Favorites";
+        
+        add.onclick = () => {
+            console.log("ADDING");
+            addOrRemove = "add";
+            addServerInfo(id, labelText, addOrRemove);       
+            add.hidden = true;
+            remove.hidden = false;
+            remove.innerText = "Remove Favorite";
+        }
+        remove.onclick = () => {
+            console.log("REMOVING");
+            addOrRemove = "remove";
+            addServerInfo(id, labelText, addOrRemove);      
+            remove.hidden = true;
+            add.hidden = false;
+            add.innerText = "Add to Favorites";
+        }      
 }
 
 function addServerInfo(id, name, add) {
@@ -142,7 +176,13 @@ function addServerInfo(id, name, add) {
 }
 
 function displaySearchResults() {
-	searchQuery = document.getElementById("search-input").value;
+    searchQuery = document.getElementById("search-input").value;
+
+    var oReq = new XMLHttpRequest();
+	oReq.open("POST", "/search");
+	oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	oReq.send(`searchContent=${searchQuery}`);
+
 	clearMarkers();
 	displaySearch(searchQuery, currentRadius, numberOfPlaces);
 }
@@ -168,8 +208,3 @@ setInterval(async function(){
 	}
 }, 1 * 30 * 1000);
 
-//Every 30 seconds, if the new location is unitDistance away from the previous location the map reloads, distance measured in taxicab metric
-setInterval(async function(){ 
-    displayFavorites();
-	displayPopular();
-}, 1 * 1 * 1000);

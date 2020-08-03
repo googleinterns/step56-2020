@@ -50,3 +50,9 @@ setInterval(async function(){
 		displayMessageChain()
 	}
 }, 1 * 1 * 1000);
+
+URLid = window.location.href.split("?")[1].split("&")[1].split("=")[1];
+URLname = window.location.href.split("?")[1].split("&")[2].split("=")[1];
+if (URLid != "") {
+    selectMarker(URLid, URLname);
+}
