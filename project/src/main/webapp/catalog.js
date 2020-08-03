@@ -2,6 +2,10 @@ var photoURLS;
 const image = document.getElementsByClassName("carousel-image");
 const reviewArea = document.getElementById("review-space");
 var reviewArr;
+var request = {
+        placeId: placeID,
+        fields: ["photos", "rating", "reviews", "name", "formatted_address"]
+    };
 
 function showCatalog(placeID) {
     console.log ("this is the catalog")
@@ -9,6 +13,7 @@ function showCatalog(placeID) {
     removeAllChildNodes(reviewArea);
     containerThree = document.getElementById("container-3").removeAttribute("hidden");
     messageContainer = document.getElementById("chat-div").removeAttribute("hidden");
+
     const request = {
         placeId: placeID,
         fields: ["photos", "rating", "reviews", "name", "formatted_address"]
@@ -19,13 +24,10 @@ function showCatalog(placeID) {
         if (status == google.maps.places.PlacesServiceStatus.OK) {
             photos = results.photos;
             reviews = results.reviews;
-            console.log(results);
             if (!photos) {
-                console.log("No Photos");
                 return;
             }
 
-            console.log(image);
             photoURLS = [];
             reviewArr = [];
             for (var i = 0; i < photos.length; i++){
