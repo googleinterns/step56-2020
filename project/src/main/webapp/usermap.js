@@ -100,6 +100,7 @@ function addMarker(map, location, labelText, imageLink, id) {
 	});
 <<<<<<< HEAD
 	marker.addListener("click", () => selectMarker(id, labelText), false);
+<<<<<<< HEAD
 =======
 	marker.addListener("click", function() {
 		currentStore = id;
@@ -134,6 +135,8 @@ function addMarker(map, location, labelText, imageLink, id) {
 		}      
 	});
 >>>>>>> adedce053ce719e84991155a0261bd87eef3184e
+=======
+>>>>>>> cd3739b110003f466f12236374b43c4c11141392
 	return marker;
 }
 
