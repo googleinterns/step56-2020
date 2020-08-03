@@ -93,38 +93,6 @@ function addMarker(map, location, labelText, imageLink, id) {
 		map: map
 	});
 	marker.addListener("click", () => selectMarker(id, labelText), false);
-    /*
-    marker.addListener("click", function() {
-		currentStore = id;
-		currentMessages = [];
-		displayMessageChain();
-		showCatalog(id);
-        var add = document.getElementById("add-favorite");
-        var remove = document.getElementById("remove-favorite");
-        var addOrRemove = "";
-        if (remove.hidden == false) {
-            remove.hidden = true;
-        } 
-        add.hidden = false;
-		add.innerText = "Add to Favorites";
-        
-        add.onclick = () => {
-            console.log("ADDING");
-            addOrRemove = "add";
-            addServerInfo(id, labelText, addOrRemove);       
-            add.hidden = true;
-            remove.hidden = false;
-            remove.innerText = "Remove Favorite";
-        }
-        remove.onclick = () => {
-            console.log("REMOVING");
-            addOrRemove = "remove";
-            addServerInfo(id, labelText, addOrRemove);      
-            remove.hidden = true;
-            add.hidden = false;
-            add.innerText = "Add to Favorites";
-        }      
-	}); */
 	return marker;
 }
 
@@ -133,31 +101,29 @@ function selectMarker(id, labelText) {
 	currentMessages = [];
 	displayMessageChain();
 	showCatalog(id);
-        var add = document.getElementById("add-favorite");
-        var remove = document.getElementById("remove-favorite");
-        var addOrRemove = "";
-        if (remove.hidden == false) {
-            remove.hidden = true;
-        } 
-        add.hidden = false;
-		add.innerText = "Add to Favorites";
+    var add = document.getElementById("add-favorite");
+    var remove = document.getElementById("remove-favorite");
+    var addOrRemove = "";
+    if (remove.hidden == false) {
+        remove.hidden = true;
+    } 
+    add.hidden = false;
+	add.innerText = "Add to Favorites";
         
-        add.onclick = () => {
-            console.log("ADDING");
-            addOrRemove = "add";
-            addServerInfo(id, labelText, addOrRemove);       
-            add.hidden = true;
-            remove.hidden = false;
-            remove.innerText = "Remove Favorite";
-        }
-        remove.onclick = () => {
-            console.log("REMOVING");
-            addOrRemove = "remove";
-            addServerInfo(id, labelText, addOrRemove);      
-            remove.hidden = true;
-            add.hidden = false;
-            add.innerText = "Add to Favorites";
-        }      
+    add.onclick = () => {
+    addOrRemove = "add";
+    addServerInfo(id, labelText, addOrRemove);       
+    add.hidden = true;
+    remove.hidden = false;
+    remove.innerText = "Remove Favorite";
+    }
+    remove.onclick = () => {
+    addOrRemove = "remove";
+    addServerInfo(id, labelText, addOrRemove);      
+    remove.hidden = true;
+    add.hidden = false;
+    add.innerText = "Add to Favorites";
+    }      
 }
 
 function addServerInfo(id, name, add) {
