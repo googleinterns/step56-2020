@@ -2,11 +2,6 @@ var photoURLS;
 const image = document.getElementsByClassName("carousel-image");
 const reviewArea = document.getElementById("review-space");
 var reviewArr;
-var request = {
-        placeId: placeID,
-        fields: ["photos", "rating", "reviews", "name", "formatted_address"]
-    };
-
 function showCatalog(placeID) {
     console.log ("this is the catalog")
     //returns photos associated with user search
