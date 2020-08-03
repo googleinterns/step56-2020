@@ -84,6 +84,7 @@ public final class Popular {
             long popularityScore = (long) entity.getProperty("score");
             popular.put(place, popularityScore);
         }
+        System.out.println("getPopular(): " + popular);
         return popular;
     }
 }

@@ -48,9 +48,11 @@ public class FavoritesServlet extends HttpServlet {
         String addToList = request.getParameter("addOrRemove");
 
         if (addToList.equals("add")) {  
+            System.out.println("ADDING 2");
             // Store user's favorited restaurant
             favorites.addToFavoritesList(user, placeID, placeName);
         } else {    // Remove from user's favorited list
+            System.out.println("REMOVING 2");
             favorites.removeFromFavoritesList(user, placeID, placeName);
         }
 
