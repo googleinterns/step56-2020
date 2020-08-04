@@ -1,75 +1,67 @@
 var photoURLS; 
-var image;
+const image = document.getElementsByClassName("carousel-image");
+const reviewArea = document.getElementById("review-space");
 var reviewArr;
-var reviewSpace;
-
-
 function showCatalog(placeID) {
     console.log ("this is the catalog")
     //returns photos associated with user search
-        const request = {
-            placeId: placeID,
-            fields: ["photos", "rating", "reviews"]
-        };
+    removeAllChildNodes(reviewArea);
+    containerThree = document.getElementById("container-3").removeAttribute("hidden");
+    messageContainer = document.getElementById("chat-div").removeAttribute("hidden");
 
-        service = new google.maps.places.PlacesService(map);
-        service.getDetails(request, function callback(results, status) { // this request will return an array of photos as a result
-            if (status == google.maps.places.PlacesServiceStatus.OK) {
-                photos = results.photos;
-                reviews = results.reviews;
-                // console.log("this is not cool" + results.reviews);
-                if (!photos) {
-                    console.log("No Photos");
-                    return;
-                }
+    const request = {
+        placeId: placeID,
+        fields: ["photos", "rating", "reviews", "name", "formatted_address"]
+    };
 
-                photoURLS = [];
-                reviewArr = [];
-                for (var i = 0; i < photos.length; i++){
-                    var url = photos[i].getUrl({maxWidth: 500, maxHeight: 500})
-                    photoURLS.push(url);
-                    if (i < 5) { // details request only returns up to 5 reviews
-                        console.log(reviews[i]);
-                        reviewArr.push(reviews[i]);
-                    }
-                }
-                image = document.getElementById("image");
-                image.src = photoURLS[0];
-                var rating = document.getElementById("rating").innerText = results.rating + "/5";
-                reviewArr.forEach(showReviews);
-                // reviewSpace = document.getElementById("review-space").innerText =  reviewArr[0].text;
-                console.log(reviewArr[0]);
+    service = new google.maps.places.PlacesService(map);
+    service.getDetails(request, function callback(results, status) { // this request will return an array of photos as a result
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+            photos = results.photos;
+            reviews = results.reviews;
+            if (!photos) {
+                return;
             }
-	    }
+
+            photoURLS = [];
+            reviewArr = [];
+            for (var i = 0; i < photos.length; i++){
+                var url = photos[i].getUrl({maxWidth: 300, maxHeight: 400})
+                image[i].src = url;
+                photoURLS.push(url);
+                if (i < 5) { // details request only returns up to 5 reviews
+                    console.log(reviews[i]);
+                    reviewArr.push(reviews[i]);
+                }
+                
+            }
+            console.log(photoURLS);
+            var rating = document.getElementById("rating").innerText = results.name + ": "  + results.rating + "/5";
+            var address = document.getElementById("address").innerText = results.formatted_address;
+            reviewArr.forEach(showReviews);
+            console.log(reviewArr[0]);
+        }
+    }
     );
 }
 
 var i = 0;
 
 function showReviews(review) {
-    var author = document.createElement("bold")
+    var author = document.createElement("bold");
+    author.setAttribute("class", "container font-weight-bold px-0");
     author.innerHTML = review.author_name;
     var text = document.createElement("p");
-    text.innerHTML = review.text
-    reviewArea = document.getElementById("review-space");
+    text.setAttribute("class", "container")
+    text.innerHTML = "\t" + review.text + "\t" +review.rating + "/5";
     reviewArea.appendChild(author);
     reviewArea.appendChild(text);
     reviewArea.appendChild(document.createElement("hr"));
 }
 
-function next() {
-    i += 1;
-    if (i < photoURLS.length) {
-        image = document.getElementById("image");
-        image.setAttribute("src", photoURLS[i]);
-    }
-}
-
-function previous() {
-    i -= 1;
-    if (i > 0) {
-        image = document.getElementById("image");
-        image.setAttribute("src", photoURLS[i]);
+function removeAllChildNodes(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
     }
 }
 
