@@ -87,4 +87,17 @@ public final class Popular {
         System.out.println("getPopular(): " + popular);
         return popular;
     }
+
+    public Map<String, String> getPopularInfo() {
+        Map<String, String> popularInfo = new HashMap<>();
+        // Load popular info from Datastore
+        PreparedQuery results = datastore.prepare(query);
+        for (Entity entity : results.asIterable()) {
+            String placeName = (String) entity.getProperty("placeName");
+            String placeID = (String) entity.getProperty("placeID");
+            popularInfo.put(placeName, placeID);
+        }
+        return popularInfo;
+    }
+
 }

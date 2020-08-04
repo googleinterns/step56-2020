@@ -14,6 +14,9 @@
 
 var user = "Guest";
 var placeID = "";
+var placeName = "";
+var URLid = "";
+var URLname = "";
 
 function start () {
     displaySearchHistory();
@@ -35,7 +38,6 @@ function fetchLoginStatus () {
         } else {
             loginContainer.innerHTML = '<a href="' + link + '">Login here</a>';
         }
-        //start();
     });
 }
 
@@ -45,6 +47,7 @@ fetchLoginStatus();
 function displaySearchHistory() {
     fetch('/search').then(response => response.json()).then((searches) => {
         const history = document.getElementById('history-content');
+        history.innerHTML = "";
         for (const search in searches) {
             history.appendChild(createHistoryElement(searches[search]));
         }
@@ -55,13 +58,15 @@ function displaySearchHistory() {
 function createHistoryElement(search) {
     const searchElement = document.createElement('a');
     searchElement.innerText = search;
+    // When clicked on, search for that keyword
+    searchElement.addEventListener("click", () => clearMarkers(), false);
+    searchElement.addEventListener("click", () => displaySearch(search, currentRadius, numberOfPlaces), false);
     return searchElement;
 }
 
 // Display user's favorite restaurants in "Favorites" bar
 function displayFavorites() {
     fetch('/favorites').then(response => response.json()).then((favorites) => {
-        console.log("favorites: " + favorites);
         const favoritesBar = document.getElementById('favorites-bar');
         favoritesBar.innerHTML = "";
         for (const fav in favorites) {
@@ -72,17 +77,21 @@ function displayFavorites() {
 
 // Creates a favorites bar element
 function createFavoritesElement(favorite) {
-    placeID = favorite;
+    placeName = favorite;
     const br = document.createElement('br');
     const favElement = document.createElement('a');
     favElement.innerText = favorite;
     favElement.appendChild(br);
-    favElement.addEventListener("click", openModal(), false);
+    fetch('/placeInfo').then(response => response.json()).then((placeInfo) => {
+        placeID = placeInfo[placeName];
+    });
+    favElement.addEventListener("click", () => openModal(placeID, placeName), false);
     return favElement;
 }
 
 // Modal opens displaying two options: go to restaurant page, or get shareable link
-function openModal () {
+function openModal (placeID, placeName) {
+    document.getElementById("favoritesModal").value = placeID + "," + placeName;
     document.getElementById("favoritesModal").style.display = "block";
 }
 
@@ -93,7 +102,7 @@ function closeModal () {
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-    var modal = document.getElementById("favoritesModal");
+    const modal = document.getElementById("favoritesModal");
     if (event.target == modal) {
         modal.style.display = "none";
     }
@@ -101,16 +110,22 @@ window.onclick = function(event) {
 
 // Go to restaurant page
 function visitPage() {
-    const shareableURL = window.location.href+"?placeID=<placeID>";
-    window.location.replace(shareableURL); 
+    // call function to go to that restaurant's page
+    const name = document.getElementById("favoritesModal").value;
+    const li = name.split(",");
+    selectMarker(li[0], li[1]);
+    document.getElementById("favoritesModal").style.display = "none";
 }
 
 // Constructs a shortened URL that leads to the chosen restaurant
 function shareableURL() {
-    //const currentURL = window.location.href;
-    const shareableURL = window.location.href+"?placeID=<placeID>";
-    alert("Shareable link: " + shareableURL);
-}
+    const info = document.getElementById("favoritesModal").value;
+    const li = info.split(",");
+    URLid = li[0];
+    URLname = li[1];
+    const url = window.location.href+ "&placeID=" + URLid + "&placeName=" + URLname;
+    alert("Shareable link: " + url);
+} 
 
 // Called once user has selected their preferred filters and pressed the Search button
 // Stores filter choices
@@ -155,6 +170,7 @@ function displayPopular() {
 
 // Creates a Popular List element
 function createPopularElement(restaurant, score) {
+    placeName = restaurant;
     const popElement = document.createElement('a');
     const br = document.createElement('br');
     var endString = " users";
@@ -163,7 +179,10 @@ function createPopularElement(restaurant, score) {
     }
     popElement.innerText = restaurant + "; Favorited by " + score + endString;
     popElement.appendChild(br);
-    //popElement.addEventListener("click", openModal(), false);
+    fetch('/placeInfo').then(response => response.json()).then((placeInfo) => {
+        placeID = placeInfo[placeName];
+    });
+    popElement.addEventListener("click", () => openModal(placeID, placeName), false);
     return popElement;
 }
 
@@ -172,3 +191,10 @@ params = new Map(window.location.search.slice(1,Infinity).split("&").map(x => x.
 if (params.has("placeID") && map.get("placeID") != undefined) {
 	showCatalogue(params.get("placeID"));
 }
+
+//Every 1 second, search history, favorites, popular list are updated
+setInterval(async function(){ 
+    displaySearchHistory();
+    displayFavorites();
+	displayPopular();
+}, 1 * 1 * 1000);

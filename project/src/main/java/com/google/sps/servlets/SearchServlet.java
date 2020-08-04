@@ -43,7 +43,7 @@ public class SearchServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // Get the search input from the form
-        String search = getParameter(request, "search-input", "");
+        String search = request.getParameter("searchContent");
         response.setContentType("text/html;");
 
         // Get current user's email address
