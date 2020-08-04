@@ -12,14 +12,16 @@ function displayMessageChain() {
 			if (currentMessages.length <= pos && document.getElementById(`msg${pos}`) == null) {
 				var messageElement;
 				messageElement = document.createElement("li");
+				messageElement.style["listStyle"] = "None";
 				messageElement.id = `msg${pos}`
-				messageElement.innerText = msg.message + " from " + msg.writer;
+				messageElement.innerText = msg.message + " from " + (msg.writer.search("@") > -1 ? "You" : "Store"); 
 				messageChain.appendChild(messageElement);
 				currentMessages.push(msg);
 			} else {
 				var messageElement;
 				messageElement = document.getElementById(`msg${pos}`);
-				messageElement.innerText = msg.message + " from " + msg.writer;
+				messageElement.style["listStyle"] = "None";
+				messageElement.innerText = msg.message + " from " + (msg.writer.search("@") > -1 ? "You" : "Store"); 
 
 			}
 			pos = pos+1;
@@ -54,5 +56,5 @@ setInterval(async function(){
 URLid = window.location.href.split("?")[1].split("&")[1].split("=")[1];
 URLname = window.location.href.split("?")[1].split("&")[2].split("=")[1];
 if (URLid != "") {
-    selectMarker(URLid, URLname);
+	selectMarker(URLid, URLname);
 }
