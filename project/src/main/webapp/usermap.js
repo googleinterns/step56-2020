@@ -98,45 +98,7 @@ function addMarker(map, location, labelText, imageLink, id) {
 		icon: image,
 		map: map
 	});
-<<<<<<< HEAD
 	marker.addListener("click", () => selectMarker(id, labelText), false);
-<<<<<<< HEAD
-=======
-	marker.addListener("click", function() {
-		currentStore = id;
-		currentMessages = [];
-		displayMessageChain();
-		showCatalog(id);
-		document.getElementById("chat-div").hidden = false;
-		var add = document.getElementById("add-favorite");
-		var remove = document.getElementById("remove-favorite");
-		var addOrRemove = "";
-		if (remove.hidden == false) {
-			remove.hidden = true;
-		} 
-		add.hidden = false;
-		add.innerText = "Add to Favorites";
-
-		add.onclick = () => {
-			console.log("ADDING");
-			addOrRemove = "add";
-			addServerInfo(id, labelText, addOrRemove);       
-			add.hidden = true;
-			remove.hidden = false;
-			remove.innerText = "Remove Favorite";
-		}
-		remove.onclick = () => {
-			console.log("REMOVING");
-			addOrRemove = "remove";
-			addServerInfo(id, labelText, addOrRemove);      
-			remove.hidden = true;
-			add.hidden = false;
-			add.innerText = "Add to Favorites";
-		}      
-	});
->>>>>>> adedce053ce719e84991155a0261bd87eef3184e
-=======
->>>>>>> cd3739b110003f466f12236374b43c4c11141392
 	return marker;
 }
 
