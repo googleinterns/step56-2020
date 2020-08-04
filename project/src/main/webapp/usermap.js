@@ -98,8 +98,8 @@ function addMarker(map, location, labelText, imageLink, id) {
 		icon: image,
 		map: map
 	});
-<<<<<<< HEAD
 	marker.addListener("click", () => selectMarker(id, labelText), false);
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
 	marker.addListener("click", function() {
@@ -134,6 +134,8 @@ function addMarker(map, location, labelText, imageLink, id) {
 			add.innerText = "Add to Favorites";
 		}      
 	});
+=======
+>>>>>>> 1b4e88aa412432d95f89a2c2ccbd6b0587d446ec
 	return marker;
 }
 
