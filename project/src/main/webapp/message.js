@@ -12,15 +12,15 @@ function displayMessageChain() {
 			if (currentMessages.length <= pos && document.getElementById(`msg${pos}`) == null) {
 				var messageElement;
 				messageElement = document.createElement("li");
-				messageElement.style["listStyle"] = "None";
-				messageElement.id = `msg${pos}`
+				messageElement.className = "msg";
+				messageElement.id = `msg${pos}`;
 				messageElement.innerText = msg.message + " from " + (msg.writer.search("@") > -1 ? "You" : "Store"); 
 				messageChain.appendChild(messageElement);
 				currentMessages.push(msg);
 			} else {
 				var messageElement;
 				messageElement = document.getElementById(`msg${pos}`);
-				messageElement.style["listStyle"] = "None";
+				messageElement.className = "msg";
 				messageElement.innerText = msg.message + " from " + (msg.writer.search("@") > -1 ? "You" : "Store"); 
 
 			}

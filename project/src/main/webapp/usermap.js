@@ -1,4 +1,4 @@
-var popular = ["McDonald's", "Burger King", "KFC", "Subway", "Wendy's", "Starbucks", "Chipotle", "Taco Bell", "Pizza Hut", "Chick-fil-a", "Dairy Queen"];
+var popular = ["McDonald's", "Burger King", "KFC", "Subway", "Wendy's", "Starbucks", "Chipotle", "Taco Bell", "Pizza Hut", "Chick-fil-a", "Dairy Queen", "Domino's Pizza", "Taco Bell", "MOD Pizza"];
 
 // get filters
 // max distance
