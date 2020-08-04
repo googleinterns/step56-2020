@@ -98,6 +98,10 @@ function addMarker(map, location, labelText, imageLink, id) {
 		icon: image,
 		map: map
 	});
+<<<<<<< HEAD
+	marker.addListener("click", () => selectMarker(id, labelText), false);
+<<<<<<< HEAD
+=======
 	marker.addListener("click", function() {
 		currentStore = id;
 		currentMessages = [];
@@ -130,7 +134,40 @@ function addMarker(map, location, labelText, imageLink, id) {
 			add.innerText = "Add to Favorites";
 		}      
 	});
+>>>>>>> adedce053ce719e84991155a0261bd87eef3184e
+=======
+>>>>>>> cd3739b110003f466f12236374b43c4c11141392
 	return marker;
+}
+
+function selectMarker(id, labelText) {
+    currentStore = id;
+	currentMessages = [];
+	displayMessageChain();
+	showCatalog(id);
+    var add = document.getElementById("add-favorite");
+    var remove = document.getElementById("remove-favorite");
+    var addOrRemove = "";
+    if (remove.hidden == false) {
+        remove.hidden = true;
+    } 
+    add.hidden = false;
+	add.innerText = "Add to Favorites";
+        
+    add.onclick = () => {
+    addOrRemove = "add";
+    addServerInfo(id, labelText, addOrRemove);       
+    add.hidden = true;
+    remove.hidden = false;
+    remove.innerText = "Remove Favorite";
+    }
+    remove.onclick = () => {
+    addOrRemove = "remove";
+    addServerInfo(id, labelText, addOrRemove);      
+    remove.hidden = true;
+    add.hidden = false;
+    add.innerText = "Add to Favorites";
+    }      
 }
 
 function addServerInfo(id, name, add) {
@@ -149,7 +186,13 @@ function addServerInfo(id, name, add) {
 }
 
 function displaySearchResults() {
-	searchQuery = document.getElementById("search-input").value;
+    searchQuery = document.getElementById("search-input").value;
+
+    var oReq = new XMLHttpRequest();
+	oReq.open("POST", "/search");
+	oReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	oReq.send(`searchContent=${searchQuery}`);
+
 	clearMarkers();
 	displaySearch(searchQuery, currentRadius, numberOfPlaces);
 }
@@ -175,8 +218,3 @@ setInterval(async function(){
 	}
 }, 1 * 30 * 1000);
 
-//Every 30 seconds, if the new location is unitDistance away from the previous location the map reloads, distance measured in taxicab metric
-setInterval(async function(){ 
-    displayFavorites();
-	displayPopular();
-}, 1 * 1 * 1000);

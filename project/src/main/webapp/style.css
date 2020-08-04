@@ -75,6 +75,10 @@ html, body {
   background-color: rgba(0,0,0,0.4); 
 }
 
+#favoritesModal{
+    display: hidden;
+}
+
 /* Modal Content/Box */
 .modal-content {
   background-color: #fefefe;
