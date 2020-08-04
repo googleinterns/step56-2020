@@ -51,6 +51,10 @@ public final class Message{
 		return writer;
 	}
 
+	public String getRecipient() {
+		return recipient;
+	}
+
 	public String getMessage() {
 		return message;
 	}
