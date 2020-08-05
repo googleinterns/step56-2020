@@ -11,6 +11,7 @@ Our goal was to create a platform that would make it easy for consumers to suppo
 Login/Logout, Map, Chat, Location services, Favorites bar, Popular list, Search bar and search history, Catalog, Reviews and ratings
 
 Google Maps Api used in conjunction with Javascripts Geolocation Api to provide a list of local resturants and information about them.
+
 Chat created as a mockup for user to store communication.
 
 
